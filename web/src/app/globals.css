@@ -342,3 +342,65 @@ a.fx:hover { background: var(--row-hover); }
 .sectionhead .more { font-size: 13px; }
 @media (max-width: 900px) { .duo { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 560px) { .duo .minigrid { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- clubs & history ---------- */
+.teamcell a.nm { color: inherit; text-decoration: none; }
+.teamcell a.nm:hover { text-decoration: underline; text-underline-offset: 3px; }
+.key .more { margin-left: auto; }
+.clublink { display: inline-block; margin-top: 14px; }
+.clubhero .wrap { display: flex; align-items: center; gap: 18px; padding-block: 22px; }
+.clubhero .crest { width: 72px; height: 82px; filter: drop-shadow(0 8px 18px rgba(30, 0, 33, .4)); flex: none; }
+.clubhero .kicker { color: #1e0021; opacity: .75; }
+.clubhero .aka { margin: 6px 0 0; font-size: 13px; color: rgba(255, 255, 255, .85); }
+.clubpage { display: grid; gap: 32px; padding-block: 24px 0; }
+.clubpage > * { min-width: 0; }
+table.hist .l { text-align: left; }
+.clubpage a { color: inherit; }
+.clubstats { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
+.cstat { background: var(--row); border-radius: 8px; padding: 12px 14px; display: grid; gap: 2px; }
+.cstat b { font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.cstat span { font-size: 12px; color: var(--muted); }
+table.hist td { height: 46px; }
+table.hist td.l a { text-decoration: none; font-weight: 600; }
+table.hist td.l a:hover { text-decoration: underline; }
+table.hist tr.champ td:first-child { box-shadow: inset 4px 0 0 var(--champ); }
+table.hist tr.releg td:first-child { box-shadow: inset 4px 0 0 var(--releg); }
+table.hist .fin { font-weight: 700; white-space: nowrap; }
+table.hist .fin small { font-weight: 400; color: var(--muted); }
+table.hist td.b { font-weight: 700; }
+table.hist .poolname { color: var(--muted); font-size: 12px; }
+.move { margin-left: 8px; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 999px; text-transform: uppercase; letter-spacing: .05em; }
+.move.up { color: #062b17; background: var(--up); }
+.move.down { color: #fff; background: var(--down); }
+svg.journey { width: 100%; min-width: 520px; height: auto; display: block; background: var(--row); border-radius: 8px; }
+svg.journey .grid { stroke: var(--line); }
+svg.journey .ax { fill: var(--muted); font: 500 11px var(--font); }
+svg.journey .ln { stroke: #6b6cff; stroke-width: 2.5; fill: none; stroke-linejoin: round; }
+svg.journey .dot { fill: #4fe8f5; stroke: var(--row); stroke-width: 2; }
+svg.journey .dot.champ { fill: var(--champ); }
+details.more-rows { margin-top: 8px; }
+details.more-rows summary { cursor: pointer; color: var(--muted); font-size: 13px; padding: 6px 0; }
+.honours { display: grid; gap: 6px; }
+.honour { display: grid; grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: center; background: var(--row); border-radius: 6px; padding: 10px 14px; }
+.hseason { font-weight: 600; font-size: 14px; }
+.hseason small { color: var(--muted); font-weight: 400; }
+.hchamp, .hrun { display: flex; align-items: center; gap: 10px; text-decoration: none; min-width: 0; }
+.hchamp b { display: block; font-size: 15px; }
+.hchamp small, .hrun small { display: block; color: var(--muted); font-size: 11.5px; }
+.hrun { font-size: 13.5px; color: var(--muted) !important; }
+.hchamp span, .hrun span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.clubgroup { margin-top: 18px; }
+.clubgroup h2 { font-size: 20px; margin: 0 0 10px; }
+.clublist { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 6px; }
+.clubitem { display: flex; align-items: center; gap: 10px; background: var(--row); border-radius: 6px; padding: 9px 12px; text-decoration: none; min-width: 0; }
+.clubitem:hover { background: var(--row-hover); }
+.clubitem span { min-width: 0; }
+.clubitem b { display: block; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.clubitem small { display: block; color: var(--muted); font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.search input { width: min(420px, calc(100vw - 32px)); background: transparent; color: var(--ink); border: 1px solid var(--pill-line); border-radius: 6px; padding: 9px 12px; font: 500 14px var(--font); }
+.search input:focus-visible { outline: 2px solid #4fe8f5; outline-offset: 1px; }
+@media (max-width: 640px) {
+  .honour { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .clubhero .crest { width: 52px; height: 60px; }
+}
+@media (max-width: 380px) { .topnav nav .navcta { display: none; } }

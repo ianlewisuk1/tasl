@@ -7,7 +7,7 @@ import pathlib
 import re
 import sys
 
-from . import db
+from . import db, history
 from .client import TeamPass
 from .parse import parse_standings, parse_team
 from .standings import Result, compute
@@ -97,7 +97,9 @@ def verify(args) -> int:
     return 1 if bad else 0
 
 
-NOT_DIVISIONS = {"Guest Players", "More Teams!"}
+NOT_DIVISIONS = {"Guest Players", "More Teams!", "World Cup Over 50"}
+# Summer Heat is a separate summer competition with its own divisions; it is left off the site.
+SKIP_TERMS = {"Summer Heat"}
 
 # Divisions are shown with English football pyramid names. TeamPass renamed some divisions over the years
 # (Mens 1 -> Triangle Men's Premier League, Coed Championship -> Coed Select); old and new names map to the
@@ -168,6 +170,8 @@ def export(args) -> int:
     previous = {s["slug"]: s for s in json.loads(old_index.read_text())["seasons"]} if old_index.exists() else {}
     index = {"generatedAt": db.now(), "seasons": []}
     for s in seasons:
+        if s["term"] in SKIP_TERMS:
+            continue
         matches = conn.execute("SELECT * FROM matches WHERE season_id = ? ORDER BY kickoff, id", (s["id"],)).fetchall()
         if args.season not in ("all", s["name"], str(s["id"])) and not (args.season == "current" and s["is_current"]):
             matches = []
@@ -205,7 +209,35 @@ def export(args) -> int:
         index["seasons"].append({**data["season"], "divisions": [{"slug": d["slug"], "name": d["name"]} for d in data["divisions"]]})
         print(f"{s['name']}: {len(data['divisions'])} divisions, {len(data['teams'])} teams, {len(data['matches'])} matches")
     (out / "index.json").write_text(json.dumps(index, indent=1))
+    export_history(out, index)
     return 0
+
+
+def export_history(out: pathlib.Path, index: dict):
+    """Clubs and division histories, rebuilt from every exported season file (oldest first)."""
+    seasons = []
+    for ref in reversed(index["seasons"]):
+        data = json.loads((out / "seasons" / f"{ref['slug']}.json").read_text())
+        names = {t["id"]: t["name"] for t in data["teams"]}
+        colours = {t["id"]: t["colours"] for t in data["teams"]}
+        results = [Result(m["home"], m["away"], m["hs"], m["as"]) for m in data["matches"]
+                   if m["status"] == "played" and m["type"] == "Regular Season" and m["hs"] is not None]
+        divisions = []
+        for d in data["divisions"]:
+            pools = []
+            for p in d["pools"]:
+                table = compute(p["teamIds"], results)
+                pools.append({"name": p["name"], "rows": [{
+                    "team_id": r.team_id, "team_name": names.get(r.team_id, "?"), "colours": colours.get(r.team_id), "pos": r.pos,
+                    "p": r.p, "w": r.w, "d": r.d, "l": r.l, "gf": r.gf, "ga": r.ga, "pts": r.pts,
+                } for r in table]})
+            divisions.append({"slug": d["slug"], "name": d["name"], "pools": pools})
+        seasons.append({"slug": ref["slug"], "name": ref["name"], "divisions": divisions,
+                        "matches": [{"home": r.home_id, "away": r.away_id, "hs": r.home_score, "as": r.away_score} for r in results]})
+    clubs, divisions = history.build(seasons, DIVISION_ORDER, slugify)
+    (out / "clubs.json").write_text(json.dumps(clubs, separators=(",", ":")))
+    (out / "history.json").write_text(json.dumps(divisions, separators=(",", ":")))
+    print(f"History: {len(clubs)} clubs, {len(divisions)} divisions across {len(seasons)} seasons")
 
 
 def main(argv=None) -> int:

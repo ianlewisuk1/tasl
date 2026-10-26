@@ -42,10 +42,33 @@ export type SeasonData = {
 export type DivisionView = {
   season: SeasonRef;
   division: Division;
+  clubs: { [teamId: number]: string }; // team id -> club page slug
+  hasHistory: boolean;
   teams: Team[];
   matches: GwMatch[]; // matches involving this division's teams, with a gameweek number
   gameweeks: number; // total gameweeks in the schedule
   seasons: { slug: string; name: string; hasDivision: boolean }[];
   divisions: { slug: string; name: string }[];
   generatedAt: string;
+};
+
+/** Played, won, drawn, lost, goals for and against, points. */
+export type Tally = { p: number; w: number; d: number; l: number; gf: number; ga: number; pts: number };
+
+export type ClubSeason = Tally & {
+  season: string; seasonName: string; division: string; divisionName: string; pool: string | null;
+  tier: number | null; teamId: number; pos: number; of: number; champion: boolean;
+};
+
+export type Club = {
+  slug: string; name: string; family: string; familyLabel: string; colours: string | null; teamId: number;
+  otherNames: string[]; titles: number; totals: Tally; seasons: ClubSeason[];
+  headToHead: (Omit<Tally, "pts"> & { club: string; name: string })[];
+};
+
+export type Honour = { club: string; name: string; pts: number };
+export type DivisionHistory = {
+  slug: string; name: string;
+  seasons: { season: string; seasonName: string; winners: { pool: string | null; champion: Honour; runnerUp: Honour | null }[] }[];
+  allTime: (Tally & { club: string; name: string; seasons: number; titles: number })[];
 };

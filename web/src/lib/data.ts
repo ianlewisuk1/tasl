@@ -3,7 +3,7 @@ import { cache } from "react";
 import path from "node:path";
 
 import { withGameweeks } from "./table";
-import type { DivisionView, Index, SeasonData } from "./types";
+import type { Club, DivisionHistory, DivisionView, Index, SeasonData } from "./types";
 
 // Written by `python -m tasl_scraper export`; committed so the site builds without the scraper.
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -32,9 +32,13 @@ export async function getDivisionView(seasonSlug: string, divisionSlug: string):
   const own = data.matches.filter((m) => ids.has(m.home ?? -1) || ids.has(m.away ?? -1));
   const { matches, gameweeks } = withGameweeks(own);
   const opponents = new Set(own.flatMap((m) => [m.home, m.away]));
+  const clubSlugs = await getClubSlugs();
+  const histories = await getHistories();
   return {
     season: data.season,
     division,
+    clubs: Object.fromEntries([...ids].map((id) => [id, clubSlugs.get(id) ?? null]).filter(([, s]) => s)),
+    hasHistory: histories.some((h) => h.slug === division.slug && h.seasons.length > 1),
     teams: data.teams.filter((t) => ids.has(t.id) || opponents.has(t.id)),
     matches,
     gameweeks,
@@ -47,3 +51,16 @@ export async function getDivisionView(seasonSlug: string, divisionSlug: string):
     generatedAt: index.generatedAt,
   };
 }
+
+export const getClubs = cache(async (): Promise<Club[]> =>
+  JSON.parse(await readFile(path.join(DATA_DIR, "clubs.json"), "utf8")));
+
+export const getHistories = cache(async (): Promise<DivisionHistory[]> =>
+  JSON.parse(await readFile(path.join(DATA_DIR, "history.json"), "utf8")));
+
+/** Club page slug for each team id, so tables and results can link to clubs. */
+export const getClubSlugs = cache(async (): Promise<Map<number, string>> => {
+  const map = new Map<number, string>();
+  for (const c of await getClubs()) for (const s of c.seasons) map.set(s.teamId, c.slug);
+  return map;
+});

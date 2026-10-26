@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-26T04:59:36+00:00",
+ "generatedAt": "2026-10-26T05:11:00+00:00",
  "seasons": [
   {
    "id": 10547,
@@ -98,6 +98,658 @@
     {
      "slug": "womens-championship",
      "name": "Women's Championship"
+    }
+   ]
+  },
+  {
+   "id": 8574,
+   "name": "Spring 2026",
+   "slug": "spring-2026",
+   "isCurrent": false,
+   "divisions": [
+    {
+     "slug": "mens-premier-league",
+     "name": "Men's Premier League"
+    },
+    {
+     "slug": "mens-championship",
+     "name": "Men's Championship"
+    },
+    {
+     "slug": "mens-league-one",
+     "name": "Men's League One"
+    },
+    {
+     "slug": "mens-league-two",
+     "name": "Men's League Two"
+    },
+    {
+     "slug": "coed-premier-league",
+     "name": "Coed Premier League"
+    },
+    {
+     "slug": "coed-championship",
+     "name": "Coed Championship"
+    },
+    {
+     "slug": "coed-league-one",
+     "name": "Coed League One"
+    },
+    {
+     "slug": "coed-league-two",
+     "name": "Coed League Two"
+    },
+    {
+     "slug": "coed-national-league",
+     "name": "Coed National League"
+    },
+    {
+     "slug": "coed-national-league-north",
+     "name": "Coed National League North"
+    },
+    {
+     "slug": "mens-over-30-premier-league",
+     "name": "Men's Over 30 Premier League"
+    },
+    {
+     "slug": "mens-over-30-championship",
+     "name": "Men's Over 30 Championship"
+    },
+    {
+     "slug": "mens-over-30-league-one",
+     "name": "Men's Over 30 League One"
+    },
+    {
+     "slug": "mens-over-40-premier-league",
+     "name": "Men's Over 40 Premier League"
+    },
+    {
+     "slug": "mens-over-50-premier-league",
+     "name": "Men's Over 50 Premier League"
+    },
+    {
+     "slug": "mens-over-60-premier-league",
+     "name": "Men's Over 60 Premier League"
+    },
+    {
+     "slug": "mens-over-60-pickup",
+     "name": "Men's Over 60 Pickup"
+    },
+    {
+     "slug": "coed-over-30-premier-league",
+     "name": "Coed Over 30 Premier League"
+    },
+    {
+     "slug": "coed-over-30-championship",
+     "name": "Coed Over 30 Championship"
+    },
+    {
+     "slug": "coed-recreational-league",
+     "name": "Coed Recreational League"
+    },
+    {
+     "slug": "womens-super-league",
+     "name": "Women's Super League"
+    },
+    {
+     "slug": "womens-championship",
+     "name": "Women's Championship"
+    }
+   ]
+  },
+  {
+   "id": 7886,
+   "name": "Fall 2025",
+   "slug": "fall-2025",
+   "isCurrent": false,
+   "divisions": [
+    {
+     "slug": "mens-premier-league",
+     "name": "Men's Premier League"
+    },
+    {
+     "slug": "mens-championship",
+     "name": "Men's Championship"
+    },
+    {
+     "slug": "mens-league-one",
+     "name": "Men's League One"
+    },
+    {
+     "slug": "mens-league-two",
+     "name": "Men's League Two"
+    },
+    {
+     "slug": "coed-premier-league",
+     "name": "Coed Premier League"
+    },
+    {
+     "slug": "coed-championship",
+     "name": "Coed Championship"
+    },
+    {
+     "slug": "coed-league-one",
+     "name": "Coed League One"
+    },
+    {
+     "slug": "coed-league-two",
+     "name": "Coed League Two"
+    },
+    {
+     "slug": "coed-national-league",
+     "name": "Coed National League"
+    },
+    {
+     "slug": "coed-national-league-north",
+     "name": "Coed National League North"
+    },
+    {
+     "slug": "mens-over-30-premier-league",
+     "name": "Men's Over 30 Premier League"
+    },
+    {
+     "slug": "mens-over-30-championship",
+     "name": "Men's Over 30 Championship"
+    },
+    {
+     "slug": "mens-over-30-league-one",
+     "name": "Men's Over 30 League One"
+    },
+    {
+     "slug": "mens-over-40-premier-league",
+     "name": "Men's Over 40 Premier League"
+    },
+    {
+     "slug": "mens-over-50-premier-league",
+     "name": "Men's Over 50 Premier League"
+    },
+    {
+     "slug": "mens-over-56-premier-league",
+     "name": "Men's Over 56 Premier League"
+    },
+    {
+     "slug": "mens-over-60-premier-league",
+     "name": "Men's Over 60 Premier League"
+    },
+    {
+     "slug": "mens-over-60-pickup",
+     "name": "Men's Over 60 Pickup"
+    },
+    {
+     "slug": "coed-over-30-premier-league",
+     "name": "Coed Over 30 Premier League"
+    },
+    {
+     "slug": "coed-over-30-championship",
+     "name": "Coed Over 30 Championship"
+    },
+    {
+     "slug": "coed-recreational-league",
+     "name": "Coed Recreational League"
+    },
+    {
+     "slug": "womens-super-league",
+     "name": "Women's Super League"
+    },
+    {
+     "slug": "womens-championship",
+     "name": "Women's Championship"
+    }
+   ]
+  },
+  {
+   "id": 6287,
+   "name": "Spring 2025",
+   "slug": "spring-2025",
+   "isCurrent": false,
+   "divisions": [
+    {
+     "slug": "mens-premier-league",
+     "name": "Men's Premier League"
+    },
+    {
+     "slug": "mens-championship",
+     "name": "Men's Championship"
+    },
+    {
+     "slug": "mens-league-one",
+     "name": "Men's League One"
+    },
+    {
+     "slug": "mens-league-two",
+     "name": "Men's League Two"
+    },
+    {
+     "slug": "coed-premier-league",
+     "name": "Coed Premier League"
+    },
+    {
+     "slug": "coed-championship",
+     "name": "Coed Championship"
+    },
+    {
+     "slug": "coed-league-one",
+     "name": "Coed League One"
+    },
+    {
+     "slug": "coed-national-league",
+     "name": "Coed National League"
+    },
+    {
+     "slug": "coed-national-league-north",
+     "name": "Coed National League North"
+    },
+    {
+     "slug": "mens-over-30-premier-league",
+     "name": "Men's Over 30 Premier League"
+    },
+    {
+     "slug": "mens-over-30-championship",
+     "name": "Men's Over 30 Championship"
+    },
+    {
+     "slug": "mens-over-40-premier-league",
+     "name": "Men's Over 40 Premier League"
+    },
+    {
+     "slug": "mens-over-50-premier-league",
+     "name": "Men's Over 50 Premier League"
+    },
+    {
+     "slug": "mens-over-56-premier-league",
+     "name": "Men's Over 56 Premier League"
+    },
+    {
+     "slug": "mens-over-60-pickup",
+     "name": "Men's Over 60 Pickup"
+    },
+    {
+     "slug": "coed-over-30-premier-league",
+     "name": "Coed Over 30 Premier League"
+    },
+    {
+     "slug": "coed-over-30-championship",
+     "name": "Coed Over 30 Championship"
+    },
+    {
+     "slug": "coed-recreational-league",
+     "name": "Coed Recreational League"
+    },
+    {
+     "slug": "womens-super-league",
+     "name": "Women's Super League"
+    },
+    {
+     "slug": "womens-championship",
+     "name": "Women's Championship"
+    },
+    {
+     "slug": "coed-1-2",
+     "name": "Coed 1/2"
+    }
+   ]
+  },
+  {
+   "id": 5868,
+   "name": "Fall 2024",
+   "slug": "fall-2024",
+   "isCurrent": false,
+   "divisions": [
+    {
+     "slug": "mens-premier-league",
+     "name": "Men's Premier League"
+    },
+    {
+     "slug": "mens-championship",
+     "name": "Men's Championship"
+    },
+    {
+     "slug": "mens-league-one",
+     "name": "Men's League One"
+    },
+    {
+     "slug": "mens-league-two",
+     "name": "Men's League Two"
+    },
+    {
+     "slug": "coed-premier-league",
+     "name": "Coed Premier League"
+    },
+    {
+     "slug": "coed-championship",
+     "name": "Coed Championship"
+    },
+    {
+     "slug": "coed-league-one",
+     "name": "Coed League One"
+    },
+    {
+     "slug": "coed-league-two",
+     "name": "Coed League Two"
+    },
+    {
+     "slug": "coed-national-league",
+     "name": "Coed National League"
+    },
+    {
+     "slug": "coed-national-league-north",
+     "name": "Coed National League North"
+    },
+    {
+     "slug": "mens-over-30-premier-league",
+     "name": "Men's Over 30 Premier League"
+    },
+    {
+     "slug": "mens-over-30-championship",
+     "name": "Men's Over 30 Championship"
+    },
+    {
+     "slug": "mens-over-30-league-one",
+     "name": "Men's Over 30 League One"
+    },
+    {
+     "slug": "mens-over-40-premier-league",
+     "name": "Men's Over 40 Premier League"
+    },
+    {
+     "slug": "mens-over-50-premier-league",
+     "name": "Men's Over 50 Premier League"
+    },
+    {
+     "slug": "mens-over-56-premier-league",
+     "name": "Men's Over 56 Premier League"
+    },
+    {
+     "slug": "mens-over-60-pickup",
+     "name": "Men's Over 60 Pickup"
+    },
+    {
+     "slug": "coed-over-30-premier-league",
+     "name": "Coed Over 30 Premier League"
+    },
+    {
+     "slug": "coed-over-30-championship",
+     "name": "Coed Over 30 Championship"
+    },
+    {
+     "slug": "coed-recreational-league",
+     "name": "Coed Recreational League"
+    },
+    {
+     "slug": "womens-super-league",
+     "name": "Women's Super League"
+    },
+    {
+     "slug": "womens-championship",
+     "name": "Women's Championship"
+    },
+    {
+     "slug": "coed-1-2",
+     "name": "Coed 1/2"
+    }
+   ]
+  },
+  {
+   "id": 3988,
+   "name": "Spring 2024",
+   "slug": "spring-2024",
+   "isCurrent": false,
+   "divisions": [
+    {
+     "slug": "mens-premier-league",
+     "name": "Men's Premier League"
+    },
+    {
+     "slug": "mens-championship",
+     "name": "Men's Championship"
+    },
+    {
+     "slug": "mens-league-one",
+     "name": "Men's League One"
+    },
+    {
+     "slug": "mens-league-two",
+     "name": "Men's League Two"
+    },
+    {
+     "slug": "coed-premier-league",
+     "name": "Coed Premier League"
+    },
+    {
+     "slug": "coed-championship",
+     "name": "Coed Championship"
+    },
+    {
+     "slug": "coed-league-one",
+     "name": "Coed League One"
+    },
+    {
+     "slug": "coed-league-two",
+     "name": "Coed League Two"
+    },
+    {
+     "slug": "coed-national-league",
+     "name": "Coed National League"
+    },
+    {
+     "slug": "mens-over-30-premier-league",
+     "name": "Men's Over 30 Premier League"
+    },
+    {
+     "slug": "mens-over-30-championship",
+     "name": "Men's Over 30 Championship"
+    },
+    {
+     "slug": "mens-over-30-league-one",
+     "name": "Men's Over 30 League One"
+    },
+    {
+     "slug": "mens-over-40-premier-league",
+     "name": "Men's Over 40 Premier League"
+    },
+    {
+     "slug": "mens-over-50-premier-league",
+     "name": "Men's Over 50 Premier League"
+    },
+    {
+     "slug": "mens-over-56-premier-league",
+     "name": "Men's Over 56 Premier League"
+    },
+    {
+     "slug": "mens-over-60-pickup",
+     "name": "Men's Over 60 Pickup"
+    },
+    {
+     "slug": "coed-over-30-premier-league",
+     "name": "Coed Over 30 Premier League"
+    },
+    {
+     "slug": "coed-over-30-championship",
+     "name": "Coed Over 30 Championship"
+    },
+    {
+     "slug": "coed-recreational-league",
+     "name": "Coed Recreational League"
+    },
+    {
+     "slug": "womens-super-league",
+     "name": "Women's Super League"
+    },
+    {
+     "slug": "coed-2",
+     "name": "Coed 2"
+    },
+    {
+     "slug": "coed-1-2",
+     "name": "Coed 1/2"
+    }
+   ]
+  },
+  {
+   "id": 2541,
+   "name": "Fall 2023",
+   "slug": "fall-2023",
+   "isCurrent": false,
+   "divisions": [
+    {
+     "slug": "mens-premier-league",
+     "name": "Men's Premier League"
+    },
+    {
+     "slug": "mens-championship",
+     "name": "Men's Championship"
+    },
+    {
+     "slug": "mens-league-one",
+     "name": "Men's League One"
+    },
+    {
+     "slug": "mens-league-two",
+     "name": "Men's League Two"
+    },
+    {
+     "slug": "coed-premier-league",
+     "name": "Coed Premier League"
+    },
+    {
+     "slug": "coed-championship",
+     "name": "Coed Championship"
+    },
+    {
+     "slug": "coed-league-two",
+     "name": "Coed League Two"
+    },
+    {
+     "slug": "mens-over-30-premier-league",
+     "name": "Men's Over 30 Premier League"
+    },
+    {
+     "slug": "mens-over-30-championship",
+     "name": "Men's Over 30 Championship"
+    },
+    {
+     "slug": "mens-over-40-premier-league",
+     "name": "Men's Over 40 Premier League"
+    },
+    {
+     "slug": "mens-over-50-premier-league",
+     "name": "Men's Over 50 Premier League"
+    },
+    {
+     "slug": "mens-over-56-premier-league",
+     "name": "Men's Over 56 Premier League"
+    },
+    {
+     "slug": "mens-over-60-pickup",
+     "name": "Men's Over 60 Pickup"
+    },
+    {
+     "slug": "coed-over-30-premier-league",
+     "name": "Coed Over 30 Premier League"
+    },
+    {
+     "slug": "coed-over-30-championship",
+     "name": "Coed Over 30 Championship"
+    },
+    {
+     "slug": "coed-recreational-league",
+     "name": "Coed Recreational League"
+    },
+    {
+     "slug": "womens-super-league",
+     "name": "Women's Super League"
+    },
+    {
+     "slug": "coed-2",
+     "name": "Coed 2"
+    },
+    {
+     "slug": "coed-1-2",
+     "name": "Coed 1/2"
+    },
+    {
+     "slug": "men-over-50-2",
+     "name": "Men Over 50 - 2"
+    }
+   ]
+  },
+  {
+   "id": 414,
+   "name": "Spring 2023",
+   "slug": "spring-2023",
+   "isCurrent": false,
+   "divisions": [
+    {
+     "slug": "mens-premier-league",
+     "name": "Men's Premier League"
+    },
+    {
+     "slug": "mens-championship",
+     "name": "Men's Championship"
+    },
+    {
+     "slug": "mens-league-one",
+     "name": "Men's League One"
+    },
+    {
+     "slug": "mens-league-two",
+     "name": "Men's League Two"
+    },
+    {
+     "slug": "coed-premier-league",
+     "name": "Coed Premier League"
+    },
+    {
+     "slug": "coed-championship",
+     "name": "Coed Championship"
+    },
+    {
+     "slug": "coed-league-two",
+     "name": "Coed League Two"
+    },
+    {
+     "slug": "mens-over-30-premier-league",
+     "name": "Men's Over 30 Premier League"
+    },
+    {
+     "slug": "mens-over-30-championship",
+     "name": "Men's Over 30 Championship"
+    },
+    {
+     "slug": "mens-over-40-premier-league",
+     "name": "Men's Over 40 Premier League"
+    },
+    {
+     "slug": "mens-over-50-premier-league",
+     "name": "Men's Over 50 Premier League"
+    },
+    {
+     "slug": "mens-over-60-pickup",
+     "name": "Men's Over 60 Pickup"
+    },
+    {
+     "slug": "coed-over-30-championship",
+     "name": "Coed Over 30 Championship"
+    },
+    {
+     "slug": "coed-recreational-league",
+     "name": "Coed Recreational League"
+    },
+    {
+     "slug": "womens-super-league",
+     "name": "Women's Super League"
+    },
+    {
+     "slug": "coed-2",
+     "name": "Coed 2"
+    },
+    {
+     "slug": "coed-1-2",
+     "name": "Coed 1/2"
+    },
+    {
+     "slug": "men-over-50-2",
+     "name": "Men Over 50 - 2"
     }
    ]
   }

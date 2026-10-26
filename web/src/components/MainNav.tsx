@@ -21,6 +21,7 @@ export function MainNav({ seasonSlug, division, registerUrl }: { seasonSlug: str
       {SECTIONS.map(([s, label]) => (
         <Link key={s} href={target(s)} aria-current={current === s ? "page" : undefined}>{label}</Link>
       ))}
+      <Link href="/clubs" aria-current={path.startsWith("/clubs") ? "page" : undefined}>Clubs</Link>
       <a href={registerUrl} target="_blank" rel="noopener noreferrer" className="navcta">Register</a>
     </nav>
   );

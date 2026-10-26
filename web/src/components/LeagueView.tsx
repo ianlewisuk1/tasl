@@ -147,6 +147,7 @@ export function LeagueView({ view, section }: { view: DivisionView; section: Sec
               <PoolTable
                 key={pool.name ?? i}
                 title={view.division.pools.length > 1 ? pool.name : null}
+                clubs={view.clubs}
                 teamIds={pool.teamIds}
                 matches={view.matches}
                 gw={gw}
@@ -162,6 +163,7 @@ export function LeagueView({ view, section }: { view: DivisionView; section: Sec
             <div className="key">
               <span><i />Champion</span>
               <span><i className="r" />Relegation</span>
+              {view.hasHistory && <Link href={`/history/${view.division.slug}`} className="more">{view.division.name} history</Link>}
             </div>
             <div className="notes">
               <span>Tiebreakers, in order: head-to-head, goal difference capped at 3 per game, fewest goals against, most shutouts.</span>
@@ -190,6 +192,7 @@ export function LeagueView({ view, section }: { view: DivisionView; section: Sec
 
 type PoolProps = {
   title: string | null;
+  clubs: DivisionView["clubs"];
   teamIds: number[];
   matches: GwMatch[];
   gw: number;
@@ -203,7 +206,7 @@ type PoolProps = {
 };
 
 function PoolTable(props: PoolProps) {
-  const { teamIds, matches, gw, lastGw, now, team, open, toggleOpen, follow, toggleFollow } = props;
+  const { teamIds, matches, gw, lastGw, now, team, open, toggleOpen, follow, toggleFollow, clubs } = props;
   const table = useMemo(() => standings(teamIds, matches, gw), [teamIds, matches, gw]);
   const prev = useMemo(() => (gw > 1 ? standings(teamIds, matches, gw - 1) : null), [teamIds, matches, gw]);
   const n = table.length;
@@ -269,7 +272,9 @@ function PoolTable(props: PoolProps) {
                     <td className="team">
                       <div className="teamcell">
                         <Crest team={t} />
-                        <span className="nm">{t.name}</span>
+                        {clubs[r.id]
+                          ? <Link href={`/clubs/${clubs[r.id]}`} className="nm" onClick={(e) => e.stopPropagation()}>{t.name}</Link>
+                          : <span className="nm">{t.name}</span>}
                         {zone === "zone-champ" && <Trophy />}
                       </div>
                     </td>
@@ -309,7 +314,7 @@ function PoolTable(props: PoolProps) {
                       </button>
                     </td>
                   </tr>
-                  {isOpen && <Detail r={r} gw={gw} matches={matches} teamIds={teamIds} now={now} team={team} />}
+                  {isOpen && <Detail r={r} gw={gw} matches={matches} teamIds={teamIds} now={now} team={team} club={clubs[r.id]} />}
                 </Fragment>
               );
             })}
@@ -320,8 +325,8 @@ function PoolTable(props: PoolProps) {
   );
 }
 
-function Detail({ r, gw, matches, teamIds, now, team }: {
-  r: Row; gw: number; matches: GwMatch[]; teamIds: number[]; now: number;
+function Detail({ r, gw, matches, teamIds, now, team, club }: {
+  r: Row; gw: number; matches: GwMatch[]; teamIds: number[]; now: number; club?: string;
   team: (id: number | null, fallback: string) => Team;
 }) {
   const positions = useMemo(
@@ -337,6 +342,7 @@ function Detail({ r, gw, matches, teamIds, now, team }: {
       <td colSpan={14}>
         <div className="detailin">
           <div>
+            {club && <Link href={`/clubs/${club}`} className="more clublink">Club history</Link>}
             <h3>Position by gameweek</h3>
             <PositionChart positions={positions} teams={teamIds.length} />
             <div className="stats">
