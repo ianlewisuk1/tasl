@@ -99,8 +99,14 @@ def verify(args) -> int:
 
 NOT_DIVISIONS = {"Guest Players", "More Teams!"}
 
-# Men's open divisions are shown with English football pyramid names. TeamPass renamed Mens 1 to
-# Triangle Men's Premier League in Fall 2026; both map to the same division so history lines up.
+# Men's and co-ed league divisions are shown with English football pyramid names. TeamPass renamed some
+# divisions over the years (Mens 1 -> Triangle Men's Premier League, Coed Championship -> Coed Select);
+# old and new names map to the same division so a team's history lines up across seasons.
+MENS_PYRAMID = ["The Premier League", "The Championship", "League One", "League Two", "National League"]
+COED_PYRAMID = [
+    "Co-ed Premier League", "Co-ed Championship", "Co-ed League One", "Co-ed League Two",
+    "Co-ed National League", "Co-ed National League North",
+]
 DISPLAY_NAMES = {
     "Triangle Men's Premier League": "The Premier League",
     "Mens 1": "The Premier League",
@@ -108,7 +114,27 @@ DISPLAY_NAMES = {
     "Mens 3": "League One",
     "Mens 4": "League Two",
     "Mens 5": "National League",
+    "Coed Premier Championship": "Co-ed Premier League",
+    "Coed Select": "Co-ed Championship",
+    "Coed Championship": "Co-ed Championship",
+    "Coed Cup": "Co-ed League One",
+    "Coed Eight - 1": "Co-ed League Two",
+    "Coed Eight - 2": "Co-ed National League",
+    "Coed Eight - 3": "Co-ed National League North",
 }
+
+
+def division_order(name: str, teampass_sort: int) -> tuple:
+    """Dropdown order: men's pyramid, other men's, co-ed pyramid, other co-ed, then everything else (premier tiers first)."""
+    if name in MENS_PYRAMID:
+        return (0, MENS_PYRAMID.index(name))
+    if name.startswith("Men"):
+        return (1, teampass_sort)
+    if name in COED_PYRAMID:
+        return (2, COED_PYRAMID.index(name))
+    if name.startswith(("Coed", "Co-ed")):
+        return (3, teampass_sort)
+    return (4, 0 if "Premier" in name else 1, teampass_sort)
 
 
 def slugify(s: str) -> str:
@@ -142,12 +168,14 @@ def export(args) -> int:
             if p["division"] in NOT_DIVISIONS or not any(i in with_games for i in ids):
                 continue
             name = DISPLAY_NAMES.get(p["division"], p["division"])
-            d = divisions.setdefault(name, {"slug": slugify(name), "name": name, "teampassName": p["division"], "pools": []})
+            d = divisions.setdefault(name, {"slug": slugify(name), "name": name, "teampassName": p["division"], "pools": [],
+                                            "_order": division_order(name, p["sort"])})
             d["pools"].append({"name": p["name"], "teamIds": ids})
-        keep = {i for d in divisions.values() for p in d["pools"] for i in p["teamIds"]}
+        ordered = sorted(divisions.values(), key=lambda d: d.pop("_order"))
+        keep = {i for d in ordered for p in d["pools"] for i in p["teamIds"]}
         data = {
             "season": {"id": s["id"], "name": s["name"], "slug": slugify(s["name"]), "isCurrent": bool(s["is_current"])},
-            "divisions": list(divisions.values()),
+            "divisions": ordered,
             "teams": [{"id": t["id"], "name": t["name"], "colours": t["colours"]} for t in teams if t["id"] in keep],
             "matches": [{
                 "id": m["id"], "kickoff": m["kickoff"], "venue": m["venue"], "pitch": m["pitch"], "type": m["match_type"],

@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-26T04:16:37+00:00",
+ "generatedAt": "2026-10-26T04:21:14+00:00",
  "seasons": [
   {
    "id": 10547,
@@ -7,14 +7,6 @@
    "slug": "fall-2026",
    "isCurrent": true,
    "divisions": [
-    {
-     "slug": "womens-8v8-recreation",
-     "name": "Women's 8v8 Recreation"
-    },
-    {
-     "slug": "womens-premier",
-     "name": "Womens Premier"
-    },
     {
      "slug": "premier-league",
      "name": "The Premier League"
@@ -64,16 +56,28 @@
      "name": "Men Over 60 Pickup"
     },
     {
-     "slug": "coed-premier-championship",
-     "name": "Coed Premier Championship"
+     "slug": "co-ed-premier-league",
+     "name": "Co-ed Premier League"
     },
     {
-     "slug": "coed-select",
-     "name": "Coed Select"
+     "slug": "co-ed-championship",
+     "name": "Co-ed Championship"
     },
     {
-     "slug": "coed-cup",
-     "name": "Coed Cup"
+     "slug": "co-ed-league-one",
+     "name": "Co-ed League One"
+    },
+    {
+     "slug": "co-ed-league-two",
+     "name": "Co-ed League Two"
+    },
+    {
+     "slug": "co-ed-national-league",
+     "name": "Co-ed National League"
+    },
+    {
+     "slug": "co-ed-national-league-north",
+     "name": "Co-ed National League North"
     },
     {
      "slug": "coed-over-30-1-2",
@@ -84,20 +88,16 @@
      "name": "Coed Over 30 - 3"
     },
     {
-     "slug": "coed-eight-1",
-     "name": "Coed Eight - 1"
-    },
-    {
-     "slug": "coed-eight-2",
-     "name": "Coed Eight - 2"
-    },
-    {
-     "slug": "coed-eight-3",
-     "name": "Coed Eight - 3"
-    },
-    {
      "slug": "coed-rec",
      "name": "Coed Rec"
+    },
+    {
+     "slug": "womens-premier",
+     "name": "Womens Premier"
+    },
+    {
+     "slug": "womens-8v8-recreation",
+     "name": "Women's 8v8 Recreation"
     }
    ]
   }
