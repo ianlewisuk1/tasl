@@ -114,7 +114,6 @@ svg.chart { width: 100%; height: auto; display: block; }
 .g .o { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .g .crest { width: 18px; height: 21px; }
 .g .s { font-weight: 700; }
-.ha { font-size: 10px; color: var(--muted); border: 1px solid var(--line); border-radius: 3px; text-align: center; padding: 1px 0; }
 .tag { font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
 
 .key { display: flex; flex-wrap: wrap; gap: 10px 24px; color: var(--muted); font-size: 13px; padding-block: 14px 8px; }

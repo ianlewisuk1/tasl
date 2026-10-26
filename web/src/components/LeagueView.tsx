@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Fragment, useMemo, useState, useSyncExternalStore } from "react";
 
 import { Crest } from "@/lib/crest";
-import { type Game, type GwMatch, type HomeAway, type Row, isPlayed, standings } from "@/lib/table";
+import { type Game, type GwMatch, type Row, isPlayed, standings } from "@/lib/table";
 import type { DivisionView, Team } from "@/lib/types";
 
 type View = "table" | "results" | "fixtures";
@@ -63,7 +63,6 @@ export function LeagueView({ view }: { view: DivisionView }) {
 
   const [tab, setTab] = useState<View>("table");
   const [gw, setGw] = useState(lastGw);
-  const [ha, setHa] = useState<HomeAway>("all");
   const [open, setOpen] = useState<Set<number>>(new Set());
   const [follow, setFollow] = useFollow();
   const toggleFollow = (id: number) => setFollow(follow === id ? null : id);
@@ -134,17 +133,7 @@ export function LeagueView({ view }: { view: DivisionView }) {
               </select>
             </label>
           )}
-          {tab === "table" && (
-            <label className="sel">
-              <span className="sr">Home and away</span>
-              <select id="f-ha" value={ha} onChange={(e) => setHa(e.target.value as HomeAway)}>
-                <option value="all">Home &amp; Away</option>
-                <option value="home">Home</option>
-                <option value="away">Away</option>
-              </select>
-            </label>
-          )}
-          <button className="reset" disabled={gw === lastGw && ha === "all"} onClick={() => { setGw(lastGw); setHa("all"); }}>
+          <button className="reset" disabled={gw === lastGw} onClick={() => setGw(lastGw)}>
             Reset <span aria-hidden="true">↺</span>
           </button>
         </div>
@@ -159,7 +148,6 @@ export function LeagueView({ view }: { view: DivisionView }) {
                 matches={view.matches}
                 gw={gw}
                 lastGw={lastGw}
-                ha={ha}
                 now={now}
                 team={team}
                 open={open}
@@ -203,7 +191,6 @@ type PoolProps = {
   matches: GwMatch[];
   gw: number;
   lastGw: number;
-  ha: HomeAway;
   now: number;
   team: (id: number | null, fallback: string) => Team;
   open: Set<number>;
@@ -213,9 +200,9 @@ type PoolProps = {
 };
 
 function PoolTable(props: PoolProps) {
-  const { teamIds, matches, gw, lastGw, ha, now, team, open, toggleOpen, follow, toggleFollow } = props;
-  const table = useMemo(() => standings(teamIds, matches, gw, ha), [teamIds, matches, gw, ha]);
-  const prev = useMemo(() => (gw > 1 ? standings(teamIds, matches, gw - 1, ha) : null), [teamIds, matches, gw, ha]);
+  const { teamIds, matches, gw, lastGw, now, team, open, toggleOpen, follow, toggleFollow } = props;
+  const table = useMemo(() => standings(teamIds, matches, gw), [teamIds, matches, gw]);
+  const prev = useMemo(() => (gw > 1 ? standings(teamIds, matches, gw - 1) : null), [teamIds, matches, gw]);
   const n = table.length;
 
   const nextFor = (id: number) =>
@@ -296,14 +283,14 @@ function PoolTable(props: PoolProps) {
                         {Array.from({ length: 5 }, (_, i) => {
                           const g = last5[i - (5 - last5.length)];
                           return g ? (
-                            <span key={i} className={`fp ${g.o}`} title={`GW${g.m.gw}: ${outcomeWord[g.o]} ${g.f}–${g.a} ${g.home ? "vs" : "at"} ${team(g.op, "").name}`}>{g.o}</span>
+                            <span key={i} className={`fp ${g.o}`} title={`GW${g.m.gw}: ${outcomeWord[g.o]} ${g.f}–${g.a} v ${team(g.op, "").name}`}>{g.o}</span>
                           ) : <span key={i} className="fp x" />;
                         })}
                       </span>
                     </td>
                     <td className="next hide-md">
                       {nx && opp ? (
-                        <span title={`Next: ${nx.home === r.id ? "vs" : "at"} ${opp.name}, ${fmtShort(nx.kickoff)} ${fmtTime(nx.kickoff)}${nx.venue ? `, ${nx.venue}` : ""}`}>
+                        <span title={`Next: v ${opp.name}, ${fmtShort(nx.kickoff)} ${fmtTime(nx.kickoff)}${nx.venue ? `, ${nx.venue}` : ""}`}>
                           <Crest team={opp} />
                         </span>
                       ) : <span className="dash" />}
@@ -319,7 +306,7 @@ function PoolTable(props: PoolProps) {
                       </button>
                     </td>
                   </tr>
-                  {isOpen && <Detail r={r} gw={gw} ha={ha} matches={matches} teamIds={teamIds} now={now} team={team} />}
+                  {isOpen && <Detail r={r} gw={gw} matches={matches} teamIds={teamIds} now={now} team={team} />}
                 </Fragment>
               );
             })}
@@ -330,17 +317,16 @@ function PoolTable(props: PoolProps) {
   );
 }
 
-function Detail({ r, gw, ha, matches, teamIds, now, team }: {
-  r: Row; gw: number; ha: HomeAway; matches: GwMatch[]; teamIds: number[]; now: number;
+function Detail({ r, gw, matches, teamIds, now, team }: {
+  r: Row; gw: number; matches: GwMatch[]; teamIds: number[]; now: number;
   team: (id: number | null, fallback: string) => Team;
 }) {
   const positions = useMemo(
-    () => Array.from({ length: gw }, (_, i) => standings(teamIds, matches, i + 1, ha).find((x) => x.id === r.id)!.pos),
-    [teamIds, matches, gw, ha, r.id],
+    () => Array.from({ length: gw }, (_, i) => standings(teamIds, matches, i + 1).find((x) => x.id === r.id)!.pos),
+    [teamIds, matches, gw, r.id],
   );
   const upcoming = matches.filter(
-    (m) => (m.home === r.id || m.away === r.id) && (!isPlayed(m) || m.gw > gw) &&
-      (ha === "all" || (ha === "home") === (m.home === r.id)),
+    (m) => (m.home === r.id || m.away === r.id) && (!isPlayed(m) || m.gw > gw),
   );
   const per = (v: number) => (r.p ? (v / r.p).toFixed(1) : "–");
   return (
@@ -365,7 +351,7 @@ function Detail({ r, gw, ha, matches, teamIds, now, team }: {
                   <span className="gw">GW{g.m.gw}</span>
                   <span className={`fp ${g.o}`}>{g.o}</span>
                   <Crest team={team(g.op, "")} size={18} />
-                  <span className="o">{g.home ? "" : "at "}{team(g.op, "").name}</span>
+                  <span className="o">{team(g.op, "").name}</span>
                   <span className="s">{g.f}–{g.a}{g.m.forfeit && <span className="tag">forfeit</span>}</span>
                 </div>
               )) : <span className="tag">No games yet</span>}
@@ -381,7 +367,7 @@ function Detail({ r, gw, ha, matches, teamIds, now, team }: {
                     return (
                       <div className="g" key={m.id}>
                         <span className="gw">GW{m.gw}</span>
-                        <span className="ha">{home ? "H" : "A"}</span>
+                        <span aria-hidden="true" />
                         <Crest team={op} size={18} />
                         <span className="o">{op.name}</span>
                         <span className="tag">{pending ? (m.status === "scheduled" ? "Result pending" : m.status) : `${fmtShort(m.kickoff)}, ${fmtTime(m.kickoff)}`}</span>

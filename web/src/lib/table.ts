@@ -34,7 +34,6 @@ export type Row = {
   pos: number;
   games: Game[];
 };
-export type HomeAway = "all" | "home" | "away";
 
 /**
  * TASL table: W3 D1 L0. Ties: head-to-head points among the tied teams, goal difference capped at ±3 per
@@ -44,7 +43,7 @@ export type HomeAway = "all" | "home" | "away";
  * Head-to-head only applies when every pair of tied teams has met the same number of times (at least once),
  * otherwise it is skipped. This reproduces all of TeamPass's official tables from Spring 2023 on.
  */
-export function standings(teamIds: number[], matches: GwMatch[], uptoGw: number, ha: HomeAway = "all"): Row[] {
+export function standings(teamIds: number[], matches: GwMatch[], uptoGw: number): Row[] {
   const ids = new Set(teamIds);
   const ms = matches
     .filter((m) => counts(m) && m.gw <= uptoGw && ids.has(m.home!) && ids.has(m.away!))
@@ -58,7 +57,6 @@ export function standings(teamIds: number[], matches: GwMatch[], uptoGw: number,
       [m.away!, m.home!, m.as!, m.hs!, false],
     ];
     for (const [me, op, f, a, home] of sides) {
-      if (ha !== "all" && (ha === "home") !== home) continue;
       const r = rows.get(me)!;
       const o: Outcome = f > a ? "W" : f < a ? "L" : "D";
       r.p++; r.gf += f; r.ga += a; r.gd3 += Math.max(-3, Math.min(3, f - a));

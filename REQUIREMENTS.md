@@ -19,7 +19,7 @@ Columns: Pos, crest + team, P, W, D, L, GF, GA, GD, Pts, Form (last 5), Next.
 - **Crests**: TASL has no logos — generate monogram crests from team name + team colours (team page lists colours).
 - **Expandable row** (mobile tap): full results, head-to-head, goals chart.
 - **Tiebreakers** shown and applied per TASL point system: H2H, GD capped at 3/game (GD3), fewest GA, most shutouts. Show real GD; GD3 in tooltip/column toggle.
-- **Filters (dropdowns)**: Division, Season, Gameweek, Home & Away, Reset.
+- **Filters (dropdowns)**: Division, Season, Gameweek, Reset. No home/away split: TASL home and away are not meaningful (shared neutral fields).
 - **Gameweeks**: label rounds 'Gameweek N' (GW = each Mon–Sun week with scheduled matches), never dates.
 - Sticky header, condensed mobile view (Pos, team, P, GD, Pts, Form).
 
