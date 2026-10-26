@@ -79,7 +79,7 @@ td.mv { width: 26px; }
 .dash { display: inline-block; width: 8px; height: 1.5px; background: var(--muted); opacity: .6; vertical-align: middle; }
 td.team { text-align: left; width: 100%; }
 .teamcell { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.teamcell .nm { font-weight: 600; font-size: 15px; overflow: hidden; text-overflow: ellipsis; }
+.teamcell .nm { font-weight: 600; font-size: 15px; white-space: normal; overflow-wrap: anywhere; text-wrap: balance; line-height: 1.25; min-width: 0; }
 .crest { width: 26px; height: 30px; flex: none; display: block; }
 td.n { width: 42px; }
 td.pts { width: 46px; font-weight: 700; }
@@ -111,7 +111,7 @@ svg.chart { width: 100%; height: auto; display: block; }
 .games { display: grid; gap: 2px; }
 .g { display: grid; grid-template-columns: 50px 20px 24px minmax(0, 1fr) auto; align-items: center; gap: 8px; font-size: 13px; padding: 5px 0; border-bottom: 1px solid var(--line); }
 .g .gw { color: var(--muted); font-size: 11px; }
-.g .o { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.g .o { white-space: normal; overflow-wrap: anywhere; text-wrap: balance; line-height: 1.25; }
 .g .crest { width: 18px; height: 21px; }
 .g .s { font-weight: 700; }
 .tag { font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
@@ -128,7 +128,6 @@ svg.chart { width: 100%; height: auto; display: block; }
 .fx { display: grid; grid-template-columns: minmax(0, 1fr) 76px minmax(0, 1fr) minmax(0, 220px); align-items: center; gap: 12px; background: var(--row); border-radius: 4px; padding: 12px 14px; margin-bottom: 4px; }
 .fx .h, .fx .a { display: flex; align-items: center; gap: 10px; min-width: 0; font-weight: 600; }
 .fx .h { justify-content: flex-end; }
-.fx .h span, .fx .a span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .fx .sc { text-align: center; font-weight: 700; font-size: 16px; background: #fff; color: #1e0021; border-radius: 4px; padding: 5px 0; font-variant-numeric: tabular-nums; }
 .fx .sc.ko { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--pill-line); font-size: 14px; font-weight: 600; }
 .fx .sc.pend { background: transparent; color: var(--muted); box-shadow: inset 0 0 0 1px var(--line); font-size: 11px; font-weight: 500; line-height: 1.2; padding: 4px 2px; }
@@ -226,8 +225,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .railrow { display: grid; gap: 2px; padding: 9px 4px; border-top: 1px solid #ece4ee; color: #1e0021; }
 .raildiv { font-size: 10.5px; color: #7a6a7d; text-transform: uppercase; letter-spacing: .06em; }
 .railmatch { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto minmax(0, 1fr); align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; }
-.railmatch .rh { text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.railmatch .ra { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.railmatch .rh { text-align: right; white-space: normal; overflow-wrap: anywhere; text-wrap: balance; line-height: 1.25; }
+.railmatch .ra { white-space: normal; overflow-wrap: anywhere; text-wrap: balance; line-height: 1.25; }
 .railmatch b { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .railmatch .crest { width: 18px; height: 21px; }
 .ft { font-size: 10px; color: #7a6a7d; text-align: center; }
@@ -251,7 +250,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .mini .b { font-weight: 700; }
 .mini tr.lead1 td:first-child { color: var(--champ); font-weight: 700; }
 .mt { display: flex; align-items: center; gap: 7px; min-width: 0; }
-.mt span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mt span { white-space: normal; overflow-wrap: anywhere; text-wrap: balance; line-height: 1.25; min-width: 0; }
 .mt .crest { width: 16px; height: 18px; }
 .mini:hover h3 { text-decoration: underline; text-underline-offset: 3px; }
 
@@ -282,9 +281,8 @@ a.fx:hover { background: var(--row-hover); }
 .tablebox { position: relative; }
 .sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 @media (max-width: 820px) {
-  /* Let the team column take what is left and truncate long names instead of widening the table. */
+  /* Let the team column take what is left; long names wrap instead of widening the table. */
   td.team { max-width: 0; }
-  .teamcell .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 }
 @media (max-width: 560px) {
   td.star { width: 30px; padding: 0; }
@@ -317,7 +315,12 @@ a.fx:hover { background: var(--row-hover); }
 .fx .h, .fx .a { flex-direction: column; align-items: stretch; gap: 6px; }
 .fx .side { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .fx .h .side { justify-content: flex-end; text-align: right; }
-.fx .side span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Never clip a club name: wrap onto balanced lines beside the crest, like the Premier League's results list. */
+.fx .side span { white-space: normal; overflow-wrap: anywhere; text-wrap: balance; line-height: 1.25; min-width: 0; }
+@media (max-width: 560px) {
+  .fx { gap: 8px; padding: 12px 10px; }
+  .fx .side { gap: 7px; font-size: 14px; }
+}
 .fx .h .subbtn { align-self: flex-end; }
 .fx .a .subbtn { align-self: flex-start; }
 .subbtn { font-size: 11.5px; font-weight: 600; color: #4fe8f5; border: 1px solid rgba(79, 232, 245, .5); border-radius: 999px; padding: 4px 10px; text-decoration: none; white-space: nowrap; line-height: 1.2; }
@@ -336,7 +339,7 @@ a.fx:hover { background: var(--row-hover); }
 .next1 .when { grid-row: span 2; display: grid; font-size: 11.5px; color: var(--muted); line-height: 1.3; }
 .next1 .when b { color: var(--ink); font-size: 14px; font-weight: 700; }
 .next1 .who { display: grid; gap: 3px; min-width: 0; font-size: 13.5px; font-weight: 600; }
-.next1 .who > span { display: flex; align-items: center; gap: 7px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.next1 .who > span { display: flex; align-items: center; gap: 7px; white-space: normal; overflow-wrap: anywhere; text-wrap: balance; line-height: 1.25; }
 .next1 .who .crest { width: 16px; height: 18px; flex: none; }
 .next1 .div { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
 .sectionhead .more { font-size: 13px; }
@@ -388,15 +391,15 @@ details.more-rows summary { cursor: pointer; color: var(--muted); font-size: 13p
 .hchamp b { display: block; font-size: 15px; }
 .hchamp small, .hrun small { display: block; color: var(--muted); font-size: 11.5px; }
 .hrun { font-size: 13.5px; color: var(--muted) !important; }
-.hchamp span, .hrun span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hchamp span, .hrun span { min-width: 0; white-space: normal; overflow-wrap: anywhere; text-wrap: balance; line-height: 1.25; }
 .clubgroup { margin-top: 18px; }
 .clubgroup h2 { font-size: 20px; margin: 0 0 10px; }
 .clublist { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 6px; }
 .clubitem { display: flex; align-items: center; gap: 10px; background: var(--row); border-radius: 6px; padding: 9px 12px; text-decoration: none; min-width: 0; }
 .clubitem:hover { background: var(--row-hover); }
 .clubitem span { min-width: 0; }
-.clubitem b { display: block; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.clubitem small { display: block; color: var(--muted); font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.clubitem b { display: block; font-size: 14px; white-space: normal; overflow-wrap: anywhere; text-wrap: balance; line-height: 1.25; }
+.clubitem small { display: block; color: var(--muted); font-size: 11.5px; white-space: normal; overflow-wrap: anywhere; text-wrap: balance; line-height: 1.25; }
 .search input { width: min(420px, calc(100vw - 32px)); background: transparent; color: var(--ink); border: 1px solid var(--pill-line); border-radius: 6px; padding: 9px 12px; font: 500 14px var(--font); }
 .search input:focus-visible { outline: 2px solid #4fe8f5; outline-offset: 1px; }
 @media (max-width: 640px) {
