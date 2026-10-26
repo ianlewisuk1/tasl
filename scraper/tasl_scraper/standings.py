@@ -1,11 +1,16 @@
 """Compute league tables from match results using the TASL point system.
 
-Win 3, draw 1, loss 0. Ties broken by: head-to-head points among the tied teams, goal difference
-capped at 3 per game, fewest goals against, most shutouts (win or draw with nothing conceded).
+Win 3, draw 1, loss 0. Ties broken by: head-to-head points among the tied teams, goal difference capped
+at 3 per game, fewest goals against, most shutouts (win or draw with nothing conceded). Teams that have not
+played sit below everyone else.
+
+Head-to-head only applies when every pair of tied teams has met the same number of times (at least once);
+otherwise TeamPass skips it. This reproduces all of TeamPass's official tables from Spring 2023 on.
 """
 from __future__ import annotations
 
-from collections import defaultdict
+from collections import Counter, defaultdict
+from itertools import combinations
 from dataclasses import dataclass, field
 
 
@@ -71,6 +76,11 @@ def compute(team_ids: list[int], results: list[Result]) -> list[Row]:
         if len(group) < 2:
             continue
         tied = {r.team_id for r in group}
+        meetings = Counter(frozenset((m.home_id, m.away_id)) for m in league if m.home_id in tied and m.away_id in tied)
+        if len({meetings[frozenset(pair)] for pair in combinations(tied, 2)} - {0}) != 1 or any(
+            meetings[frozenset(pair)] == 0 for pair in combinations(tied, 2)
+        ):
+            continue
         for m in league:
             if m.home_id in tied and m.away_id in tied:
                 if m.home_score > m.away_score:
@@ -81,7 +91,7 @@ def compute(team_ids: list[int], results: list[Result]) -> list[Row]:
                     rows[m.home_id].h2h += 1
                     rows[m.away_id].h2h += 1
 
-    table = sorted(rows.values(), key=lambda r: (-r.pts, -r.h2h, -r.gd3, r.ga, -r.shutouts))
+    table = sorted(rows.values(), key=lambda r: (r.p == 0, -r.pts, -r.h2h, -r.gd3, r.ga, -r.shutouts))
     for i, r in enumerate(table, 1):
         r.pos = i
     return table

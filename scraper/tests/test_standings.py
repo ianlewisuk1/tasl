@@ -28,14 +28,27 @@ def test_head_to_head_beats_goal_difference():
     assert (b.team_id, b.pts, b.gd3) == (2, 4, 2)
 
 
-def test_three_way_tie_falls_to_capped_gd():
-    # Each team wins once against the others, so head-to-head is level and capped GD decides.
+def test_three_way_tie_where_all_have_met_uses_head_to_head():
+    # Each team beats one other once, so head-to-head is level (3 each) and capped GD decides.
     results = [Result(1, 2, 1, 0), Result(2, 3, 5, 0), Result(3, 1, 1, 0)]
     table = compute([1, 2, 3], results)
-    assert [(r.team_id, r.gd3) for r in table] == [(2, 2), (1, 0), (3, -2)]
+    assert [(r.team_id, r.h2h, r.gd3) for r in table] == [(2, 3, 2), (1, 3, 0), (3, 3, -2)]
 
 
 def test_capped_gd_and_shutouts():
     table = compute([1, 2], [Result(1, 2, 7, 0), Result(2, 1, 0, 0)])
     one = next(r for r in table if r.team_id == 1)
     assert one.gd == 7 and one.gd3 == 3 and one.shutouts == 2 and one.form == ["W", "D"]
+
+
+def test_head_to_head_skipped_when_tied_teams_have_not_all_met():
+    # 1, 2 and 3 all finish on 3 pts, but 1 and 3 never played each other, so TeamPass skips head-to-head:
+    # 3 has the best capped GD and ranks first even though it lost to 2.
+    results = [Result(1, 2, 1, 0), Result(2, 3, 1, 0), Result(3, 4, 9, 0)]
+    table = compute([1, 2, 3, 4], results)
+    assert [(r.team_id, r.pts, r.gd3) for r in table] == [(3, 3, 2), (1, 3, 1), (2, 3, 0), (4, 0, -3)]
+
+
+def test_teams_without_games_go_last():
+    table = compute([1, 2, 3], [Result(1, 2, 9, 0)])
+    assert [r.team_id for r in table] == [1, 2, 3]

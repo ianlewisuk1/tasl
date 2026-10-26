@@ -37,8 +37,12 @@ export type Row = {
 export type HomeAway = "all" | "home" | "away";
 
 /**
- * TASL table: W3 D1 L0. Ties: head-to-head points among tied teams, goal difference capped at ±3
- * per game, fewest goals against, most shutouts. Only regular-season matches between pool teams count.
+ * TASL table: W3 D1 L0. Ties: head-to-head points among the tied teams, goal difference capped at ±3 per
+ * game, fewest goals against, most shutouts. Teams that have not played sit below everyone else. Only
+ * regular-season matches between pool teams count.
+ *
+ * Head-to-head only applies when every pair of tied teams has met the same number of times (at least once),
+ * otherwise it is skipped. This reproduces all of TeamPass's official tables from Spring 2023 on.
  */
 export function standings(teamIds: number[], matches: GwMatch[], uptoGw: number, ha: HomeAway = "all"): Row[] {
   const ids = new Set(teamIds);
@@ -68,6 +72,13 @@ export function standings(teamIds: number[], matches: GwMatch[], uptoGw: number,
   for (const group of byPts.values()) {
     if (group.length < 2) continue;
     const tied = new Set(group.map((r) => r.id));
+    const pairKey = (a: number, b: number) => (a < b ? `${a}-${b}` : `${b}-${a}`);
+    const meetings = new Map<string, number>();
+    for (const m of ms) {
+      if (tied.has(m.home!) && tied.has(m.away!)) meetings.set(pairKey(m.home!, m.away!), (meetings.get(pairKey(m.home!, m.away!)) ?? 0) + 1);
+    }
+    const counts = group.flatMap((a, i) => group.slice(i + 1).map((b) => meetings.get(pairKey(a.id, b.id)) ?? 0));
+    if (counts.some((n) => n === 0) || new Set(counts).size !== 1) continue;
     for (const m of ms) {
       if (!tied.has(m.home!) || !tied.has(m.away!)) continue;
       const h = rows.get(m.home!)!, a = rows.get(m.away!)!;
@@ -77,7 +88,7 @@ export function standings(teamIds: number[], matches: GwMatch[], uptoGw: number,
     }
   }
   const list = [...rows.values()].sort(
-    (a, b) => b.pts - a.pts || b.h2h - a.h2h || b.gd3 - a.gd3 || a.ga - b.ga || b.cs - a.cs || a.id - b.id,
+    (a, b) => Number(a.p === 0) - Number(b.p === 0) || b.pts - a.pts || b.h2h - a.h2h || b.gd3 - a.gd3 || a.ga - b.ga || b.cs - a.cs || a.id - b.id,
   );
   list.forEach((r, i) => (r.pos = i + 1));
   return list;

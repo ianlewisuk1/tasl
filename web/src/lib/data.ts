@@ -18,6 +18,9 @@ export const getSeason = cache(async (slug: string): Promise<SeasonData | null> 
   return JSON.parse(await readFile(path.join(DATA_DIR, "seasons", `${slug}.json`), "utf8"));
 });
 
+/** TASL registration lives on TeamPass. */
+export const REGISTER_URL = "https://app.teampass.com/League/TASL/";
+
 /** Flagship division to land on when none is chosen. */
 export const DEFAULT_DIVISION = "mens-premier-league";
 

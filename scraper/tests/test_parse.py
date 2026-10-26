@@ -70,3 +70,13 @@ def test_kickoff_year_from_weekday():
 def test_season_without_standings():
     page = parse_standings("<html><body><div>Coming Soon!!!</div></body></html>")
     assert page.current_season is None and page.pools == []
+
+
+def test_cancelled_match_with_awarded_result_counts():
+    # Summer Heat 2023: the Jul 19 game is listed as "Cancelled Wednesday, Jul 19 - 6:15 PM" but shows "Win (3:0)".
+    team = parse_team(read("team_21044_sh2023_cancelled.html"), 21044, 2023)
+    assert len(team.matches) == 12
+    awarded = next(m for m in team.matches if m.kickoff == dt.datetime(2023, 7, 19, 18, 15))
+    assert awarded.status == "played" and awarded.forfeit
+    assert (awarded.home_id, awarded.home_score, awarded.away_score) == (21044, 3, 0)
+    assert parse_kickoff("Cancelled Wednesday, Jul 19 - 6:15 PM", 2023) == dt.datetime(2023, 7, 19, 18, 15)

@@ -9,6 +9,7 @@ from selectolax.lexbor import LexborHTMLParser as HTMLParser, LexborNode as Node
 
 TEAM_HREF = re.compile(r"/Team/(\d+)")
 EVENT_HREF = re.compile(r"/Event/(\d+)_")
+WEEKDAY = re.compile(r"(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),\s*(\w{3})\w*\s+(\d{1,2})\s*-\s*(\d{1,2}:\d{2}\s*[AP]M)")
 RESULT = re.compile(r"\b(Win|Loss|Draw)\s*\((\d+):(\d+)\)")
 TEAM_COUNT = re.compile(r"\s*\(\d+ Teams?\)\s*$")
 
@@ -212,10 +213,11 @@ def _table_after_heading(tree: HTMLParser, heading: str) -> Node | None:
 
 
 def _parse_match_row(tds: list[Node], team_id: int, team_name: str, season_year: int) -> Match | None:
-    when = _text(tds[0])  # "Saturday, Aug 15 - 2:00 PM"
+    when = _text(tds[0])  # "Saturday, Aug 15 - 2:00 PM", sometimes prefixed: "Cancelled Wednesday, Jul 19 - 6:15 PM"
     kickoff = parse_kickoff(when, season_year)
     if kickoff is None:
         return None
+    prefix = when[: WEEKDAY.search(when).start()].strip()
     venue, _, pitch = _text(tds[1]).partition(" - ")
 
     cell = tds[2]
@@ -240,8 +242,10 @@ def _parse_match_row(tds: list[Node], team_id: int, team_name: str, season_year:
     forfeit = "forfeit" in row_text.lower()
     if res:
         status = "played"
-    elif res_text:
-        status = res_text
+        # A cancelled match that still shows a result was awarded; TeamPass counts it like a forfeit.
+        forfeit = forfeit or bool(prefix)
+    elif prefix or res_text:
+        status = prefix or res_text
     else:
         status = "scheduled"
 
@@ -267,7 +271,7 @@ def _parse_match_row(tds: list[Node], team_id: int, team_name: str, season_year:
 
 def parse_kickoff(when: str, season_year: int) -> dt.datetime | None:
     """'Saturday, Aug 15 - 2:00 PM' has no year. Pick the year near the season whose weekday matches."""
-    m = re.match(r"(\w+),\s*(\w{3})\w*\s+(\d{1,2})\s*-\s*(\d{1,2}:\d{2}\s*[AP]M)", when)
+    m = WEEKDAY.search(when)
     if not m:
         return None
     weekday, mon, day, time = m.groups()
