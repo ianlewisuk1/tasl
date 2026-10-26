@@ -1,0 +1,22 @@
+[project]
+name = "tasl-scraper"
+version = "0.1.0"
+description = "Scrapes public TASL data from TeamPass into a database"
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.27",
+    "selectolax>=1.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[project.scripts]
+tasl-scraper = "tasl_scraper.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
