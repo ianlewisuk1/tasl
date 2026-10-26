@@ -80,3 +80,13 @@ def test_cancelled_match_with_awarded_result_counts():
     assert awarded.status == "played" and awarded.forfeit
     assert (awarded.home_id, awarded.home_score, awarded.away_score) == (21044, 3, 0)
     assert parse_kickoff("Cancelled Wednesday, Jul 19 - 6:15 PM", 2023) == dt.datetime(2023, 7, 19, 18, 15)
+
+
+def test_upcoming_match_has_guest_player_link():
+    team = parse_team(read("team_161724.html"), 161724, 2026)
+    upcoming = [m for m in team.matches if m.status == "scheduled"]
+    assert upcoming and upcoming[-1].guest_url == (
+        "https://app.teampass.com/product/227497?a=1&sid=10547_B623C54356F9BD9710AA59F48A67049D"
+        "&Gstvnt=318203&t_id=161724&c=15B240"
+    )
+    assert all(m.guest_url is None for m in team.matches if m.status == "played")

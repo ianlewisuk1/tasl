@@ -49,6 +49,8 @@ CREATE TABLE IF NOT EXISTS matches (
     away_score  INTEGER,
     status      TEXT NOT NULL,               -- "played", "scheduled", or TeamPass text e.g. "Cancelled"
     forfeit     INTEGER NOT NULL DEFAULT 0,
+    home_guest_url TEXT,                     -- TeamPass guest-player signup for the home team in this game
+    away_guest_url TEXT,
     updated_at  TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS matches_season ON matches (season_id, kickoff);
@@ -69,6 +71,10 @@ def connect(path: str) -> sqlite3.Connection:
     conn = sqlite3.connect(path)
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
+    cols = {r["name"] for r in conn.execute("PRAGMA table_info(matches)")}
+    for col in ("home_guest_url", "away_guest_url"):
+        if col not in cols:
+            conn.execute(f"ALTER TABLE matches ADD COLUMN {col} TEXT")
     return conn
 
 
@@ -133,4 +139,9 @@ def save_team(conn, season_id: int, team: TeamPage) -> int:
                  away_score = excluded.away_score, status = excluded.status, forfeit = excluded.forfeit, updated_at = excluded.updated_at""",
             row + (ts,),
         )
+    # Each team's page only carries its own guest link, so set just that side and leave the other alone.
+    for m in team.matches:
+        side = "home_guest_url" if m.home_id == team.id else "away_guest_url"
+        cur = conn.execute(f"UPDATE matches SET {side} = ? WHERE id = ? AND {side} IS NOT ?", (m.guest_url, m.key, m.guest_url))
+        changed += cur.rowcount
     return changed

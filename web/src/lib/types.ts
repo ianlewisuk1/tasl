@@ -23,6 +23,9 @@ export type Match = {
   as: number | null;
   status: string; // "played" | "scheduled" | TeamPass text
   forfeit: boolean;
+  // TeamPass guest-player ("sub") signup for each team, present for upcoming games.
+  homeSub?: string | null;
+  awaySub?: string | null;
 };
 
 export type Pool = { name: string | null; teamIds: number[] };

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import datetime as dt
 import re
+from html import unescape as html_unescape
 from dataclasses import dataclass, field
 
 from selectolax.lexbor import LexborHTMLParser as HTMLParser, LexborNode as Node
@@ -158,6 +159,9 @@ class Match:
     away_score: int | None
     status: str          # "played", "scheduled", or raw text such as "Cancelled"
     forfeit: bool
+    # TeamPass "register guest player" link for the team whose page this row came from (upcoming games only).
+    # It carries a per-team, per-game code, so it has to be read from the page, not built.
+    guest_url: str | None = None
 
     @property
     def key(self) -> str:
@@ -249,6 +253,8 @@ def _parse_match_row(tds: list[Node], team_id: int, team_name: str, season_year:
     else:
         status = "scheduled"
 
+    guest = next((a.attributes.get("href") for td in tds[4:] for a in td.css("a[href*='Gstvnt=']")), None)
+
     home_id, away_id = (team_id, opp_id) if is_home else (opp_id, team_id)
     home_name, away_name = (team_name, opp_name) if is_home else (opp_name, team_name)
     return Match(
@@ -266,6 +272,7 @@ def _parse_match_row(tds: list[Node], team_id: int, team_name: str, season_year:
         away_score=int(res.group(3)) if res else None,
         status=status,
         forfeit=forfeit,
+        guest_url=html_unescape(guest) if guest else None,
     )
 
 

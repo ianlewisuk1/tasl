@@ -198,6 +198,7 @@ def export(args) -> int:
                 "id": m["id"], "kickoff": m["kickoff"], "venue": m["venue"], "pitch": m["pitch"], "type": m["match_type"],
                 "home": m["home_id"], "away": m["away_id"], "homeName": m["home_name"], "awayName": m["away_name"],
                 "hs": m["home_score"], "as": m["away_score"], "status": m["status"], "forfeit": bool(m["forfeit"]),
+                "homeSub": m["home_guest_url"], "awaySub": m["away_guest_url"],
             } for m in matches if m["home_id"] in keep or m["away_id"] in keep],
         }
         (out / "seasons" / f"{data['season']['slug']}.json").write_text(json.dumps(data, separators=(",", ":")))

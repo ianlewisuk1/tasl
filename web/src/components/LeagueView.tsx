@@ -444,9 +444,13 @@ function MatchList({ matches, desc, now, team }: {
                 {ms.map((m) => {
                   const h = team(m.home, m.homeName), a = team(m.away, m.awayName);
                   const pending = !isPlayed(m) && toDate(m.kickoff).getTime() < now;
+                  const upcoming = !isPlayed(m) && !pending;
                   return (
                     <div className="fx" key={m.id}>
-                      <div className="h"><span>{h.name}</span><Crest team={h} size={22} /></div>
+                      <div className="h">
+                        <div className="side"><span>{h.name}</span><Crest team={h} size={22} /></div>
+                        {upcoming && <SubButton href={m.homeSub} team={h.name} kickoff={m.kickoff} />}
+                      </div>
                       {isPlayed(m) ? (
                         <div>
                           <div className="sc">{m.hs} - {m.as}</div>
@@ -457,7 +461,10 @@ function MatchList({ matches, desc, now, team }: {
                       ) : (
                         <div className="sc ko">{fmtTime(m.kickoff)}</div>
                       )}
-                      <div className="a"><Crest team={a} size={22} /><span>{a.name}</span></div>
+                      <div className="a">
+                        <div className="side"><Crest team={a} size={22} /><span>{a.name}</span></div>
+                        {upcoming && <SubButton href={m.awaySub} team={a.name} kickoff={m.kickoff} />}
+                      </div>
                       <div className="ven">{[m.venue, m.pitch && `field ${m.pitch}`].filter(Boolean).join(", ")}</div>
                     </div>
                   );
@@ -468,6 +475,17 @@ function MatchList({ matches, desc, now, team }: {
         );
       })}
     </section>
+  );
+}
+
+/** Opens TeamPass's one-game guest player registration for this team in this match. */
+function SubButton({ href, team, kickoff }: { href: string | null | undefined; team: string; kickoff: string }) {
+  if (!href) return null;
+  return (
+    <a className="subbtn" href={href} target="_blank" rel="noopener noreferrer"
+      aria-label={`Sign up as a sub for ${team}, ${fmtShort(kickoff)} (opens TeamPass)`}>
+      Sign up as sub
+    </a>
   );
 }
 
