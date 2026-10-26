@@ -46,8 +46,6 @@ const RENAMED_DIVISIONS: Record<string, string> = {
 };
 
 const nextConfig: NextConfig = {
-  cacheComponents: true,
-  partialPrefetching: true,
   // A package-lock.json in a parent directory confuses workspace detection.
   turbopack: { root: path.resolve(__dirname) },
   async redirects() {

@@ -4,6 +4,9 @@ import { notFound } from "next/navigation";
 import { LeagueView } from "@/components/LeagueView";
 import { getDivisionView, getIndex } from "@/lib/data";
 
+// Every season and division is built ahead of time; anything else is a 404.
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const index = await getIndex();
   return index.seasons.flatMap((s) => s.divisions.map((d) => ({ season: s.slug, division: d.slug })));
