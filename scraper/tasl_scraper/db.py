@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import datetime as dt
+import pathlib
 import sqlite3
 
 from .parse import Pool, Season, TeamPage
@@ -68,6 +69,8 @@ CREATE TABLE IF NOT EXISTS official_standings (
 
 
 def connect(path: str) -> sqlite3.Connection:
+    # data/ is gitignored, so it is missing on a fresh checkout (e.g. in CI).
+    pathlib.Path(path).parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(path)
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
