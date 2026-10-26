@@ -6,8 +6,8 @@ import { type Result, getHomeData } from "@/lib/home";
 import type { Team } from "@/lib/types";
 
 const toDate = (iso: string) => new Date(`${iso.slice(0, 16)}:00`);
-const fmtDay = (iso: string) => toDate(iso).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
 const fmtShort = (iso: string) => toDate(iso).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+const fmtShortDay = (iso: string) => toDate(iso).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
 const fmtTime = (iso: string) => toDate(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
 
 export default async function Home() {
@@ -17,8 +17,6 @@ export default async function Home() {
   const side = (m: Result, home: boolean): Team => team(home ? m.home : m.away, home ? m.homeName : m.awayName);
   const divHref = (m: Result) => `/results/${data.seasonSlug}/${m.division.slug}`;
 
-  const days = new Map<string, Result[]>();
-  for (const m of data.upcoming) days.set(m.kickoff.slice(0, 10), [...(days.get(m.kickoff.slice(0, 10)) ?? []), m]);
 
   return (
     <>
@@ -91,56 +89,56 @@ export default async function Home() {
           </aside>
         </section>
 
-        <section>
-          <div className="sectionhead">
-            <h2>League tables</h2>
-            <span>{data.seasonName}</span>
-          </div>
-          <div className="minigrid">
-            {data.tables.map((t) => (
-              <Link key={t.division.slug} href={t.href} className="mini">
-                <h3>{t.division.name}</h3>
-                <table>
-                  <thead><tr><th className="l">Pos</th><th className="l">Team</th><th>Pl</th><th>GD</th><th>Pts</th></tr></thead>
-                  <tbody>
-                    {t.rows.map((r) => (
-                      <tr key={r.id} className={r.pos === 1 && r.p ? "lead1" : undefined}>
-                        <td className="l">{r.pos}</td>
-                        <td className="l"><span className="mt"><Crest team={r.team} size={16} /><span>{r.team.name}</span></span></td>
-                        <td>{r.p}</td>
-                        <td>{r.gf - r.ga}</td>
-                        <td className="b">{r.pts}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <span className="more">Full table</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        {data.upcoming.length > 0 && (
-          <section>
+        <section className="duo">
+          <div>
             <div className="sectionhead">
-              <h2>Coming up</h2>
-              <span>Next {data.upcoming.length} matches</span>
+              <h2>Tables</h2>
+              <Link href={`/tables/${data.seasonSlug}/mens-premier-league`} className="more">All {data.divisionCount} divisions</Link>
             </div>
-            {[...days.entries()].map(([day, ms]) => (
-              <div key={day}>
-                <div className="day">{fmtDay(ms[0].kickoff)}</div>
-                {ms.map((m) => (
-                  <Link key={m.id} href={`/fixtures/${data.seasonSlug}/${m.division.slug}`} className="fx">
-                    <div className="h"><span>{side(m, true).name}</span><Crest team={side(m, true)} size={22} /></div>
-                    <div className="sc ko">{fmtTime(m.kickoff)}</div>
-                    <div className="a"><Crest team={side(m, false)} size={22} /><span>{side(m, false).name}</span></div>
-                    <div className="ven">{m.division.name}{m.venue ? ` · ${m.venue}` : ""}</div>
+            <div className="minigrid">
+              {data.tables.map((t) => (
+                <Link key={t.division.slug} href={t.href} className="mini">
+                  <h3>{t.division.name}</h3>
+                  <table>
+                    <thead><tr><th className="l">Pos</th><th className="l">Team</th><th>Pl</th><th>GD</th><th>Pts</th></tr></thead>
+                    <tbody>
+                      {t.rows.map((r) => (
+                        <tr key={r.id} className={r.pos === 1 && r.p ? "lead1" : undefined}>
+                          <td className="l">{r.pos}</td>
+                          <td className="l"><span className="mt"><Crest team={r.team} size={16} /><span>{r.team.name}</span></span></td>
+                          <td>{r.p}</td>
+                          <td>{r.gf - r.ga}</td>
+                          <td className="b">{r.pts}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {data.upcoming.length > 0 && (
+            <div>
+              <div className="sectionhead">
+                <h2>Coming up</h2>
+                <Link href={`/fixtures/${data.seasonSlug}/mens-premier-league`} className="more">All fixtures</Link>
+              </div>
+              <div className="nextlist">
+                {data.upcoming.map((m) => (
+                  <Link key={m.id} href={`/fixtures/${data.seasonSlug}/${m.division.slug}`} className="next1">
+                    <span className="when">{fmtShortDay(m.kickoff)}<b>{fmtTime(m.kickoff)}</b></span>
+                    <span className="who">
+                      <span><Crest team={side(m, true)} size={16} />{side(m, true).name}</span>
+                      <span><Crest team={side(m, false)} size={16} />{side(m, false).name}</span>
+                    </span>
+                    <span className="div">{m.division.name}</span>
                   </Link>
                 ))}
               </div>
-            ))}
-          </section>
-        )}
+            </div>
+          )}
+        </section>
 
         <section>
           <div className="sectionhead">

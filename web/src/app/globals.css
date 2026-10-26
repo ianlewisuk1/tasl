@@ -325,3 +325,20 @@ a.fx:hover { background: var(--row-hover); }
 .subbtn:focus-visible { outline: 2px solid #4fe8f5; outline-offset: 2px; }
 .subbtn::after { content: " ↗"; }
 @media (max-width: 420px) { .subbtn { font-size: 11px; padding: 4px 8px; } }
+
+/* ---------- home: compact tables + coming up ---------- */
+.duo { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.duo .sectionhead h2 { font-size: 22px; }
+.duo .minigrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.nextlist { display: grid; gap: 4px; }
+.next1 { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 4px 12px; align-items: center; background: var(--row); border-radius: 6px; padding: 9px 12px; }
+.next1:hover { background: var(--row-hover); }
+.next1 .when { grid-row: span 2; display: grid; font-size: 11.5px; color: var(--muted); line-height: 1.3; }
+.next1 .when b { color: var(--ink); font-size: 14px; font-weight: 700; }
+.next1 .who { display: grid; gap: 3px; min-width: 0; font-size: 13.5px; font-weight: 600; }
+.next1 .who > span { display: flex; align-items: center; gap: 7px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.next1 .who .crest { width: 16px; height: 18px; flex: none; }
+.next1 .div { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.sectionhead .more { font-size: 13px; }
+@media (max-width: 900px) { .duo { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 560px) { .duo .minigrid { grid-template-columns: minmax(0, 1fr); } }

@@ -2,12 +2,15 @@ import { getIndex, getSeason } from "./data";
 import { type GwMatch, type Row, isPlayed, standings, withGameweeks } from "./table";
 import type { Division, Team } from "./types";
 
-/** The divisions shown as mini tables on the home page: the two main pyramids. */
-const FEATURED = [
+/** Home page tables: the top flight of each main pyramid. Everything else is one click away. */
+const FEATURED = ["mens-premier-league", "coed-premier-league"];
+/** "Coming up" draws from the main pyramids only, so the list stays short and relevant. */
+const UPCOMING_FROM = [
   "mens-premier-league", "mens-championship", "mens-league-one", "mens-league-two",
   "coed-premier-league", "coed-championship", "coed-league-one", "coed-league-two",
-  "coed-national-league", "coed-national-league-north",
 ];
+const UPCOMING_COUNT = 6;
+const TABLE_ROWS = 5;
 const LEAD_DIVISION = "mens-premier-league";
 
 export type Result = GwMatch & { division: Division };
@@ -26,6 +29,7 @@ export type HomeData = {
   tables: MiniTable[];
   upcoming: Result[];
   numbers: { label: string; value: string; detail: string }[];
+  divisionCount: number;
   team: (id: number | null, fallback: string) => Team;
 };
 
@@ -121,12 +125,13 @@ export async function getHomeData(): Promise<HomeData | null> {
 
   const tables: MiniTable[] = FEATURED.map((slug) => season.divisions.find((d) => d.slug === slug))
     .filter((d): d is Division => !!d)
-    .map((d) => ({ division: d, href: href(d), rows: tableFor(d, gameweek).slice(0, 4).map((r) => ({ ...r, team: team(r.id, "") })) }));
+    .map((d) => ({ division: d, href: href(d), rows: tableFor(d, gameweek).slice(0, TABLE_ROWS).map((r) => ({ ...r, team: team(r.id, "") })) }));
 
   const nowIso = index.generatedAt.slice(0, 16);
   const upcoming = matches.filter((m) => !isPlayed(m) && m.kickoff > nowIso)
-    .map(withDivision).filter((m): m is Result => m !== null)
-    .sort((a, b) => a.kickoff.localeCompare(b.kickoff)).slice(0, 12);
+    .map(withDivision).filter((m): m is Result => m !== null && UPCOMING_FROM.includes(m.division.slug))
+    .sort((a, b) => a.kickoff.localeCompare(b.kickoff) || UPCOMING_FROM.indexOf(a.division.slug) - UPCOMING_FROM.indexOf(b.division.slug))
+    .slice(0, UPCOMING_COUNT);
 
   // Season in numbers.
   const all = results.filter((m) => m.type === "Regular Season");
@@ -148,6 +153,6 @@ export async function getHomeData(): Promise<HomeData | null> {
 
   return {
     seasonName: season.season.name, seasonSlug: season.season.slug, generatedAt: index.generatedAt, gameweek: leadGameweek,
-    lead, stories, latest, ticker: [...results].sort(newestFirst).slice(0, 16), tables, upcoming, numbers, team,
+    divisionCount: season.divisions.length, lead, stories, latest, ticker: [...results].sort(newestFirst).slice(0, 16), tables, upcoming, numbers, team,
   };
 }
