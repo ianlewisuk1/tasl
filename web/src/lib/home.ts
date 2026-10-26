@@ -40,7 +40,7 @@ export async function getHomeData(): Promise<HomeData | null> {
     (id !== null && teams.get(id)) || { id: id ?? 0, name: fallback, colours: null };
   const divisionOf = new Map<number, Division>();
   for (const d of season.divisions) for (const p of d.pools) for (const id of p.teamIds) divisionOf.set(id, d);
-  const href = (d: Division) => `/${season.season.slug}/${d.slug}`;
+  const href = (d: Division) => `/tables/${season.season.slug}/${d.slug}`;
 
   // One league-wide gameweek numbering so the home page talks about a single "Gameweek N".
   const { matches } = withGameweeks(season.matches);

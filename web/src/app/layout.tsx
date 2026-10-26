@@ -3,6 +3,7 @@ import { Outfit } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 
+import { MainNav } from "@/components/MainNav";
 import { DEFAULT_DIVISION, REGISTER_URL, getIndex } from "@/lib/data";
 import "./globals.css";
 
@@ -30,11 +31,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                 <small>Triangle Adult Soccer League</small>
               </span>
             </Link>
-            <nav aria-label="Main">
-              <Link href="/">Home</Link>
-              <Link href={`/${season.slug}/${DEFAULT_DIVISION}`}>Tables</Link>
-              <a href={REGISTER_URL} target="_blank" rel="noopener noreferrer" className="navcta">Register</a>
-            </nav>
+            <MainNav seasonSlug={season.slug} division={DEFAULT_DIVISION} registerUrl={REGISTER_URL} />
           </div>
         </header>
         {children}

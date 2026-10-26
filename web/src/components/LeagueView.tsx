@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Fragment, useMemo, useState, useSyncExternalStore } from "react";
 
@@ -7,8 +8,9 @@ import { Crest } from "@/lib/crest";
 import { type Game, type GwMatch, type Row, isPlayed, standings } from "@/lib/table";
 import type { DivisionView, Team } from "@/lib/types";
 
-type View = "table" | "results" | "fixtures";
-const TITLES: Record<View, string> = { table: "Table", results: "Results", fixtures: "Fixtures" };
+export type Section = "tables" | "results" | "fixtures";
+const TITLES: Record<Section, string> = { tables: "Table", results: "Results", fixtures: "Fixtures" };
+const TAB_LABELS: Record<Section, string> = { tables: "Table", results: "Results", fixtures: "Fixtures" };
 const RELEGATION_MIN_TEAMS = 6;
 const FOLLOW_KEY = "tasl-follow";
 
@@ -54,14 +56,15 @@ function useFollow(): [number | null, (id: number | null) => void] {
   return [follow, set];
 }
 
-export function LeagueView({ view }: { view: DivisionView }) {
+export function LeagueView({ view, section }: { view: DivisionView; section: Section }) {
   const router = useRouter();
   const now = useNow(view.generatedAt);
   const teams = useMemo(() => new Map(view.teams.map((t) => [t.id, t])), [view.teams]);
   const played = useMemo(() => view.matches.filter(isPlayed), [view.matches]);
   const lastGw = played.length ? Math.max(...played.map((m) => m.gw)) : 1;
 
-  const [tab, setTab] = useState<View>("table");
+  const tab = section;
+  const pathFor = (sec: Section, season = view.season.slug, division = view.division.slug) => `/${sec}/${season}/${division}`;
   const [gw, setGw] = useState(lastGw);
   const [open, setOpen] = useState<Set<number>>(new Set());
   const [follow, setFollow] = useFollow();
@@ -84,13 +87,13 @@ export function LeagueView({ view }: { view: DivisionView }) {
           <h1>{TITLES[tab]}</h1>
         </div>
         <div className="subnav">
-          <div className="wrap" role="tablist" aria-label="View">
-            {(Object.keys(TITLES) as View[]).map((v) => (
-              <button key={v} role="tab" aria-selected={tab === v} onClick={() => setTab(v)}>
-                {TITLES[v]}
-              </button>
+          <nav className="wrap" aria-label="Section">
+            {(Object.keys(TAB_LABELS) as Section[]).map((v) => (
+              <Link key={v} href={pathFor(v)} aria-current={tab === v ? "page" : undefined}>
+                {TAB_LABELS[v]}
+              </Link>
             ))}
-          </div>
+          </nav>
         </div>
       </div>
 
@@ -101,7 +104,7 @@ export function LeagueView({ view }: { view: DivisionView }) {
             <select
               id="f-div"
               value={view.division.slug}
-              onChange={(e) => router.push(`/${view.season.slug}/${e.target.value}`)}
+              onChange={(e) => router.push(pathFor(tab, view.season.slug, e.target.value))}
             >
               {view.divisions.map((d) => (
                 <option key={d.slug} value={d.slug}>{d.name}</option>
@@ -113,7 +116,7 @@ export function LeagueView({ view }: { view: DivisionView }) {
             <select
               id="f-season"
               value={view.season.slug}
-              onChange={(e) => router.push(`/${e.target.value}/${view.division.slug}`)}
+              onChange={(e) => router.push(pathFor(tab, e.target.value))}
             >
               {view.seasons.map((s) => (
                 <option key={s.slug} value={s.slug} disabled={!s.hasDivision}>
@@ -138,7 +141,7 @@ export function LeagueView({ view }: { view: DivisionView }) {
           </button>
         </div>
 
-        {tab === "table" && (
+        {tab === "tables" && (
           <section>
             {view.division.pools.map((pool, i) => (
               <PoolTable
@@ -228,7 +231,7 @@ function PoolTable(props: PoolProps) {
               <th className="hide-md" title="Goals against">GA</th>
               <th title="Goal difference">GD</th>
               <th title="Points">Pts</th>
-              <th>Form</th>
+              <th className="hide-xs">Form</th>
               <th className="hide-md">Next</th>
               <th><span className="sr">Follow</span></th>
             </tr>
@@ -278,7 +281,7 @@ function PoolTable(props: PoolProps) {
                     <td className="n hide-md">{r.ga}</td>
                     <td className="n" title={`Capped GD (tiebreaker): ${signed(r.gd3)}`}>{r.gf - r.ga}</td>
                     <td className="pts">{r.pts}</td>
-                    <td className="form">
+                    <td className="form hide-xs">
                       <span className="formrow">
                         {Array.from({ length: 5 }, (_, i) => {
                           const g = last5[i - (5 - last5.length)];

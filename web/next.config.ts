@@ -49,11 +49,15 @@ const nextConfig: NextConfig = {
   // A package-lock.json in a parent directory confuses workspace detection.
   turbopack: { root: path.resolve(__dirname) },
   async redirects() {
-    return Object.entries(RENAMED_DIVISIONS).map(([from, to]) => ({
-      source: `/:season/${from}`,
-      destination: `/:season/${to}`,
-      permanent: true,
-    }));
+    return [
+      // Division pages used to live at /<season>/<division>; tables, results and fixtures are now top level.
+      { source: "/:season((?:fall|spring|summer-heat)-\\d{4})/:division", destination: "/tables/:season/:division", permanent: true },
+      ...Object.entries(RENAMED_DIVISIONS).map(([from, to]) => ({
+        source: `/:section(tables|results|fixtures)/:season/${from}`,
+        destination: `/:section/:season/${to}`,
+        permanent: true,
+      })),
+    ];
   },
 };
 

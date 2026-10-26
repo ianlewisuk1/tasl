@@ -15,7 +15,7 @@ export default async function Home() {
   if (!data) return <main className="wrap"><p className="empty">No season data yet.</p></main>;
   const { team } = data;
   const side = (m: Result, home: boolean): Team => team(home ? m.home : m.away, home ? m.homeName : m.awayName);
-  const divHref = (m: Result) => `/${data.seasonSlug}/${m.division.slug}`;
+  const divHref = (m: Result) => `/results/${data.seasonSlug}/${m.division.slug}`;
 
   const days = new Map<string, Result[]>();
   for (const m of data.upcoming) days.set(m.kickoff.slice(0, 10), [...(days.get(m.kickoff.slice(0, 10)) ?? []), m]);
@@ -130,7 +130,7 @@ export default async function Home() {
               <div key={day}>
                 <div className="day">{fmtDay(ms[0].kickoff)}</div>
                 {ms.map((m) => (
-                  <Link key={m.id} href={divHref(m)} className="fx">
+                  <Link key={m.id} href={`/fixtures/${data.seasonSlug}/${m.division.slug}`} className="fx">
                     <div className="h"><span>{side(m, true).name}</span><Crest team={side(m, true)} size={22} /></div>
                     <div className="sc ko">{fmtTime(m.kickoff)}</div>
                     <div className="a"><Crest team={side(m, false)} size={22} /><span>{side(m, false).name}</span></div>
