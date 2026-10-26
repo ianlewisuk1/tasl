@@ -26,7 +26,7 @@ export type Match = {
 };
 
 export type Pool = { name: string | null; teamIds: number[] };
-export type Division = { slug: string; name: string; pools: Pool[] };
+export type Division = { slug: string; name: string; teampassName: string; pools: Pool[] };
 
 export type SeasonData = {
   season: SeasonRef;

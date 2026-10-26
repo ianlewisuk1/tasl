@@ -99,9 +99,20 @@ def verify(args) -> int:
 
 NOT_DIVISIONS = {"Guest Players", "More Teams!"}
 
+# Men's open divisions are shown with English football pyramid names. TeamPass renamed Mens 1 to
+# Triangle Men's Premier League in Fall 2026; both map to the same division so history lines up.
+DISPLAY_NAMES = {
+    "Triangle Men's Premier League": "The Premier League",
+    "Mens 1": "The Premier League",
+    "Mens 2": "The Championship",
+    "Mens 3": "League One",
+    "Mens 4": "League Two",
+    "Mens 5": "National League",
+}
+
 
 def slugify(s: str) -> str:
-    return re.sub(r"[^a-z0-9]+", "-", s.lower().replace("'", "")).strip("-")
+    return re.sub(r"^the-", "", re.sub(r"[^a-z0-9]+", "-", s.lower().replace("'", "")).strip("-"))
 
 
 def export(args) -> int:
@@ -116,6 +127,8 @@ def export(args) -> int:
     index = {"generatedAt": db.now(), "seasons": []}
     for s in seasons:
         matches = conn.execute("SELECT * FROM matches WHERE season_id = ? ORDER BY kickoff, id", (s["id"],)).fetchall()
+        if args.season not in ("all", s["name"], str(s["id"])) and not (args.season == "current" and s["is_current"]):
+            matches = []
         if not matches:
             kept = previous.get(slugify(s["name"]))
             if kept and (out / "seasons" / f"{kept['slug']}.json").exists():
@@ -128,7 +141,8 @@ def export(args) -> int:
             ids = [t["id"] for t in teams if t["pool_title"] == p["title"]]
             if p["division"] in NOT_DIVISIONS or not any(i in with_games for i in ids):
                 continue
-            d = divisions.setdefault(p["division"], {"slug": slugify(p["division"]), "name": p["division"], "pools": []})
+            name = DISPLAY_NAMES.get(p["division"], p["division"])
+            d = divisions.setdefault(name, {"slug": slugify(name), "name": name, "teampassName": p["division"], "pools": []})
             d["pools"].append({"name": p["name"], "teamIds": ids})
         keep = {i for d in divisions.values() for p in d["pools"] for i in p["teamIds"]}
         data = {
@@ -162,6 +176,7 @@ def main(argv=None) -> int:
     v.set_defaults(fn=verify)
     e = sub.add_parser("export", help="Write JSON for the web app")
     e.add_argument("--out", default=str(REPO / "web" / "data"))
+    e.add_argument("--season", default="all", help="Seasons to re-export; others keep their existing files")
     e.set_defaults(fn=export)
     args = ap.parse_args(argv)
     return args.fn(args)

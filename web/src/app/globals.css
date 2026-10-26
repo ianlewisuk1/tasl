@@ -172,3 +172,5 @@ td.n, td.pts { min-width: 40px; }
 thead th { min-width: 40px; }
 thead th.l { min-width: 0; }
 @media (max-width: 560px) { td.n, td.pts, thead th { min-width: 28px; } }
+.logo { width: 48px; height: 48px; flex: none; }
+.brand .wrap { padding-block: 10px; }

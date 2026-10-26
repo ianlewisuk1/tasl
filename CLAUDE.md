@@ -24,3 +24,4 @@ Replacement site for the Triangle Adult Soccer League. Product requirements: `RE
 ## UI rules
 - Mimic premierleague.com tables; rounds are "Gameweek N" (Mon–Sun week with scheduled games), never dates.
 - Zones: champion = 1st (gold), relegation = bottom 2 (red).
+- Men's open divisions use English pyramid names (The Premier League, The Championship, League One, League Two); mapping lives in `DISPLAY_NAMES` in `scraper/tasl_scraper/cli.py`.

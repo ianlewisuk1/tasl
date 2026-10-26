@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit } from "next/font/google";
+import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
 
@@ -19,7 +20,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <header className="brand">
           <div className="wrap">
             <Link href="/" className="brandlink">
-              <span className="mark">TASL</span>
+              <Image src="/tasl-logo.png" alt="TASL" width={48} height={48} priority className="logo" />
               <span>
                 <b>Triangle Adult Soccer League</b>
                 <small>North Carolina&apos;s largest adult soccer league</small>

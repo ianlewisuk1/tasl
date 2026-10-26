@@ -20,7 +20,7 @@ export async function getSeason(slug: string): Promise<SeasonData | null> {
 }
 
 /** Flagship division to land on when none is chosen. */
-export const DEFAULT_DIVISION = "triangle-mens-premier-league";
+export const DEFAULT_DIVISION = "premier-league";
 
 export async function getDivisionView(seasonSlug: string, divisionSlug: string): Promise<DivisionView | null> {
   "use cache";
