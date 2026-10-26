@@ -407,3 +407,9 @@ details.more-rows summary { cursor: pointer; color: var(--muted); font-size: 13p
   .clubhero .crest { width: 52px; height: 60px; }
 }
 @media (max-width: 380px) { .topnav nav .navcta { display: none; } }
+
+/* ---------- footer: old-school hit counter ---------- */
+.sitefoot { border-top: 1px solid var(--line); margin-top: 40px; padding: 22px 0 calc(28px + env(safe-area-inset-bottom, 0px)); }
+.hits { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 0; color: var(--muted); font-size: 13px; }
+.odo { display: inline-flex; gap: 2px; padding: 3px; background: #000; border: 1px solid #555; border-radius: 3px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, .8); }
+.odo i { font-style: normal; font-family: "Courier New", ui-monospace, monospace; font-weight: 700; font-size: 17px; line-height: 1; color: #3dff6e; text-shadow: 0 0 6px rgba(61, 255, 110, .6); background: linear-gradient(#1a1a1a 0 50%, #0d0d0d 50% 100%); padding: 4px 4px 3px; border-radius: 2px; min-width: 1.15em; text-align: center; }

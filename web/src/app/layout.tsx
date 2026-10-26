@@ -3,6 +3,7 @@ import { Outfit } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 
+import { HitCounter } from "@/components/HitCounter";
 import { MainNav } from "@/components/MainNav";
 import { DEFAULT_DIVISION, REGISTER_URL, getIndex } from "@/lib/data";
 import "./globals.css";
@@ -35,6 +36,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           </div>
         </header>
         {children}
+        <footer className="sitefoot">
+          <div className="wrap"><HitCounter /></div>
+        </footer>
       </body>
     </html>
   );
