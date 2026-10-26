@@ -4,19 +4,31 @@ import type { NextConfig } from "next";
 
 // Division addresses from before the men's and co-ed divisions took English pyramid names.
 const RENAMED_DIVISIONS: Record<string, string> = {
-  "triangle-mens-premier-league": "premier-league",
-  "mens-1": "premier-league",
-  "mens-2": "championship",
-  "mens-3": "league-one",
-  "mens-4": "league-two",
-  "mens-5": "national-league",
-  "coed-premier-championship": "co-ed-premier-league",
-  "coed-select": "co-ed-championship",
-  "coed-championship": "co-ed-championship",
-  "coed-cup": "co-ed-league-one",
-  "coed-eight-1": "co-ed-league-two",
-  "coed-eight-2": "co-ed-national-league",
-  "coed-eight-3": "co-ed-national-league-north",
+  // TeamPass names
+  "triangle-mens-premier-league": "mens-premier-league",
+  "mens-1": "mens-premier-league",
+  "mens-2": "mens-championship",
+  "mens-3": "mens-league-one",
+  "mens-4": "mens-league-two",
+  "mens-5": "mens-national-league",
+  "coed-premier-championship": "coed-premier-league",
+  "coed-select": "coed-championship",
+  "coed-cup": "coed-league-one",
+  "coed-eight-1": "coed-league-two",
+  "coed-eight-2": "coed-national-league",
+  "coed-eight-3": "coed-national-league-north",
+  // Earlier pyramid names used during development
+  "premier-league": "mens-premier-league",
+  "championship": "mens-championship",
+  "league-one": "mens-league-one",
+  "league-two": "mens-league-two",
+  "national-league": "mens-national-league",
+  "co-ed-premier-league": "coed-premier-league",
+  "co-ed-championship": "coed-championship",
+  "co-ed-league-one": "coed-league-one",
+  "co-ed-league-two": "coed-league-two",
+  "co-ed-national-league": "coed-national-league",
+  "co-ed-national-league-north": "coed-national-league-north",
 };
 
 const nextConfig: NextConfig = {

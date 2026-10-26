@@ -9,7 +9,7 @@ export default function NotFound() {
       <main className="wrap">
         <p className="notes" style={{ paddingTop: 24 }}>
           That division or season isn&apos;t in the league records.{" "}
-          <Link href="/">Go to the current Premier League table</Link>.
+          <Link href="/">Go to the current Men&apos;s Premier League table</Link>.
         </p>
       </main>
     </>

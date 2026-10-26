@@ -102,38 +102,40 @@ NOT_DIVISIONS = {"Guest Players", "More Teams!"}
 # Men's and co-ed league divisions are shown with English football pyramid names. TeamPass renamed some
 # divisions over the years (Mens 1 -> Triangle Men's Premier League, Coed Championship -> Coed Select);
 # old and new names map to the same division so a team's history lines up across seasons.
-MENS_PYRAMID = ["The Premier League", "The Championship", "League One", "League Two", "National League"]
+MENS_PYRAMID = [
+    "Men's Premier League", "Men's Championship", "Men's League One", "Men's League Two", "Men's National League",
+]
 COED_PYRAMID = [
-    "Co-ed Premier League", "Co-ed Championship", "Co-ed League One", "Co-ed League Two",
-    "Co-ed National League", "Co-ed National League North",
+    "Coed Premier League", "Coed Championship", "Coed League One", "Coed League Two",
+    "Coed National League", "Coed National League North",
 ]
 DISPLAY_NAMES = {
-    "Triangle Men's Premier League": "The Premier League",
-    "Mens 1": "The Premier League",
-    "Mens 2": "The Championship",
-    "Mens 3": "League One",
-    "Mens 4": "League Two",
-    "Mens 5": "National League",
-    "Coed Premier Championship": "Co-ed Premier League",
-    "Coed Select": "Co-ed Championship",
-    "Coed Championship": "Co-ed Championship",
-    "Coed Cup": "Co-ed League One",
-    "Coed Eight - 1": "Co-ed League Two",
-    "Coed Eight - 2": "Co-ed National League",
-    "Coed Eight - 3": "Co-ed National League North",
+    "Triangle Men's Premier League": "Men's Premier League",
+    "Mens 1": "Men's Premier League",
+    "Mens 2": "Men's Championship",
+    "Mens 3": "Men's League One",
+    "Mens 4": "Men's League Two",
+    "Mens 5": "Men's National League",
+    "Coed Premier Championship": "Coed Premier League",
+    "Coed Select": "Coed Championship",
+    "Coed Championship": "Coed Championship",
+    "Coed Cup": "Coed League One",
+    "Coed Eight - 1": "Coed League Two",
+    "Coed Eight - 2": "Coed National League",
+    "Coed Eight - 3": "Coed National League North",
 }
 
 
 def division_order(name: str, teampass_sort: int) -> tuple:
-    """Dropdown order: men's pyramid, other men's, co-ed pyramid, other co-ed, then everything else (premier tiers first)."""
+    """Dropdown order: men's pyramid, co-ed pyramid, then other men's, other co-ed, everything else."""
     if name in MENS_PYRAMID:
         return (0, MENS_PYRAMID.index(name))
-    if name.startswith("Men"):
-        return (1, teampass_sort)
     if name in COED_PYRAMID:
-        return (2, COED_PYRAMID.index(name))
-    if name.startswith(("Coed", "Co-ed")):
-        return (3, teampass_sort)
+        return (1, COED_PYRAMID.index(name))
+    if name.startswith("Men"):
+        return (2, 0, teampass_sort)
+    if name.startswith("Coed"):
+        return (3, 0, teampass_sort)
     return (4, 0 if "Premier" in name else 1, teampass_sort)
 
 

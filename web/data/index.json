@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-26T04:21:14+00:00",
+ "generatedAt": "2026-10-26T04:24:42+00:00",
  "seasons": [
   {
    "id": 10547,
@@ -8,20 +8,44 @@
    "isCurrent": true,
    "divisions": [
     {
-     "slug": "premier-league",
-     "name": "The Premier League"
+     "slug": "mens-premier-league",
+     "name": "Men's Premier League"
     },
     {
-     "slug": "championship",
-     "name": "The Championship"
+     "slug": "mens-championship",
+     "name": "Men's Championship"
     },
     {
-     "slug": "league-one",
-     "name": "League One"
+     "slug": "mens-league-one",
+     "name": "Men's League One"
     },
     {
-     "slug": "league-two",
-     "name": "League Two"
+     "slug": "mens-league-two",
+     "name": "Men's League Two"
+    },
+    {
+     "slug": "coed-premier-league",
+     "name": "Coed Premier League"
+    },
+    {
+     "slug": "coed-championship",
+     "name": "Coed Championship"
+    },
+    {
+     "slug": "coed-league-one",
+     "name": "Coed League One"
+    },
+    {
+     "slug": "coed-league-two",
+     "name": "Coed League Two"
+    },
+    {
+     "slug": "coed-national-league",
+     "name": "Coed National League"
+    },
+    {
+     "slug": "coed-national-league-north",
+     "name": "Coed National League North"
     },
     {
      "slug": "men-over-30-1",
@@ -54,30 +78,6 @@
     {
      "slug": "men-over-60-pickup",
      "name": "Men Over 60 Pickup"
-    },
-    {
-     "slug": "co-ed-premier-league",
-     "name": "Co-ed Premier League"
-    },
-    {
-     "slug": "co-ed-championship",
-     "name": "Co-ed Championship"
-    },
-    {
-     "slug": "co-ed-league-one",
-     "name": "Co-ed League One"
-    },
-    {
-     "slug": "co-ed-league-two",
-     "name": "Co-ed League Two"
-    },
-    {
-     "slug": "co-ed-national-league",
-     "name": "Co-ed National League"
-    },
-    {
-     "slug": "co-ed-national-league-north",
-     "name": "Co-ed National League North"
     },
     {
      "slug": "coed-over-30-1-2",
