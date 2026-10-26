@@ -47,11 +47,13 @@ class TeamPass:
 
     def standings(self, season_id: int | None = None) -> str:
         """Current season by GET; other seasons by POSTing the season filter form."""
-        html = self._request("GET", f"{LEAGUE}/Standings/index.cfm")
+        url = f"{LEAGUE}/Standings/index.cfm"
+        html = self._request("GET", url)
         if season_id is not None:
             page = parse_standings(html)
             if page.current_season.id != season_id:
-                html = self._request("POST", f"{LEAGUE}/Standings/index.cfm", data={
+                # Without a Referer, TeamPass answers the POST with an empty body.
+                html = self._request("POST", url, headers={"Referer": url}, data={
                     "Table_Season": str(season_id),
                     "DivsAndSkillsFilter": "",
                     "hash": page.form_hash or "",

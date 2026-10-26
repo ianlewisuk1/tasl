@@ -65,3 +65,8 @@ def test_kickoff_year_from_weekday():
     assert parse_kickoff("Saturday, Aug 15 - 2:00 PM", 2026) == dt.datetime(2026, 8, 15, 14, 0)
     # Fall 2025 season, but a January game falls in 2026
     assert parse_kickoff("Saturday, Jan 10 - 9:00 AM", 2025).year == 2026
+
+
+def test_season_without_standings():
+    page = parse_standings("<html><body><div>Coming Soon!!!</div></body></html>")
+    assert page.current_season is None and page.pools == []

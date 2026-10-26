@@ -77,8 +77,9 @@ class StandingsPage:
     form_hash: str | None
 
     @property
-    def current_season(self) -> Season:
-        return next((s for s in self.seasons if s.selected), self.seasons[-1])
+    def current_season(self) -> Season | None:
+        """None when TeamPass has no table for the season (it shows "Coming Soon!!!" instead)."""
+        return next((s for s in self.seasons if s.selected), self.seasons[-1] if self.seasons else None)
 
 
 def parse_standings(html: str) -> StandingsPage:

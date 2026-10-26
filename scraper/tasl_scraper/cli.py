@@ -34,6 +34,9 @@ def scrape(args) -> int:
 
     for season in targets:
         page = current if season.id == current.current_season.id else parse_standings(tp.standings(season.id))
+        if page.current_season is None:
+            print(f"{season.name}: no standings published, skipping", flush=True)
+            continue
         if page.current_season.id != season.id:
             print(f"{season.name}: TeamPass returned {page.current_season.name} instead, skipping", file=sys.stderr)
             continue
@@ -107,10 +110,16 @@ def export(args) -> int:
     out = pathlib.Path(args.out)
     (out / "seasons").mkdir(parents=True, exist_ok=True)
     seasons = conn.execute("SELECT * FROM seasons ORDER BY sort DESC").fetchall()
+    # Scheduled runs scrape only the current season, so keep previously exported seasons as they are.
+    old_index = out / "index.json"
+    previous = {s["slug"]: s for s in json.loads(old_index.read_text())["seasons"]} if old_index.exists() else {}
     index = {"generatedAt": db.now(), "seasons": []}
     for s in seasons:
         matches = conn.execute("SELECT * FROM matches WHERE season_id = ? ORDER BY kickoff, id", (s["id"],)).fetchall()
         if not matches:
+            kept = previous.get(slugify(s["name"]))
+            if kept and (out / "seasons" / f"{kept['slug']}.json").exists():
+                index["seasons"].append({**kept, "isCurrent": bool(s["is_current"])})
             continue
         teams = conn.execute("SELECT * FROM teams WHERE season_id = ?", (s["id"],)).fetchall()
         with_games = {m["home_id"] for m in matches} | {m["away_id"] for m in matches}

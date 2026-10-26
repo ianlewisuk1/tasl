@@ -1,0 +1,57 @@
+name: Scrape TeamPass
+
+on:
+  schedule:
+    # Hourly 14:00–05:00 UTC (10am–1am Eastern), when games are played and results get entered.
+    - cron: "0 14-23,0-5 * * *"
+  workflow_dispatch:
+    inputs:
+      season:
+        description: "'current', 'all', or a season name like 'Fall 2025'"
+        default: current
+
+concurrency:
+  group: scrape
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Test parsers
+        working-directory: scraper
+        run: uv run pytest -q
+
+      - name: Scrape
+        working-directory: scraper
+        run: uv run python -m tasl_scraper scrape --season "${{ inputs.season || 'current' }}"
+
+      - name: Verify tables against TeamPass
+        working-directory: scraper
+        # A mismatch is reported in the log but does not block publishing.
+        run: uv run python -m tasl_scraper verify --season "${{ inputs.season || 'current' }}" || echo "::warning::Computed tables differ from TeamPass"
+
+      - name: Export
+        working-directory: scraper
+        run: uv run python -m tasl_scraper export
+
+      - name: Commit data if it changed
+        run: |
+          # generatedAt changes every run; only commit when season data changed.
+          if git diff --quiet -- web/data/seasons; then
+            echo "No data changes"
+            exit 0
+          fi
+          git config user.name "tasl-scraper[bot]"
+          git config user.email "tasl-scraper@users.noreply.github.com"
+          git add web/data
+          git commit -m "Update data $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
