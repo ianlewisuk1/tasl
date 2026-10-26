@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-26T04:24:42+00:00",
+ "generatedAt": "2026-10-26T04:28:14+00:00",
  "seasons": [
   {
    "id": 10547,
@@ -48,56 +48,56 @@
      "name": "Coed National League North"
     },
     {
-     "slug": "men-over-30-1",
-     "name": "Men Over 30 - 1"
+     "slug": "mens-over-30-premier-league",
+     "name": "Men's Over 30 Premier League"
     },
     {
-     "slug": "men-over-30-2",
-     "name": "Men Over 30 - 2"
+     "slug": "mens-over-30-championship",
+     "name": "Men's Over 30 Championship"
     },
     {
-     "slug": "men-over-30-3",
-     "name": "Men Over 30 - 3"
+     "slug": "mens-over-30-league-one",
+     "name": "Men's Over 30 League One"
     },
     {
-     "slug": "men-over-40",
-     "name": "Men Over 40"
+     "slug": "mens-over-40-premier-league",
+     "name": "Men's Over 40 Premier League"
     },
     {
-     "slug": "men-over-50",
-     "name": "Men Over 50"
+     "slug": "mens-over-50-premier-league",
+     "name": "Men's Over 50 Premier League"
     },
     {
-     "slug": "men-over-56",
-     "name": "Men Over 56"
+     "slug": "mens-over-56-premier-league",
+     "name": "Men's Over 56 Premier League"
     },
     {
-     "slug": "men-over-60",
-     "name": "Men Over 60"
+     "slug": "mens-over-60-premier-league",
+     "name": "Men's Over 60 Premier League"
     },
     {
-     "slug": "men-over-60-pickup",
-     "name": "Men Over 60 Pickup"
+     "slug": "mens-over-60-pickup",
+     "name": "Men's Over 60 Pickup"
     },
     {
-     "slug": "coed-over-30-1-2",
-     "name": "Coed Over 30 - 1/2"
+     "slug": "coed-over-30-premier-league",
+     "name": "Coed Over 30 Premier League"
     },
     {
-     "slug": "coed-over-30-3",
-     "name": "Coed Over 30 - 3"
+     "slug": "coed-over-30-championship",
+     "name": "Coed Over 30 Championship"
     },
     {
-     "slug": "coed-rec",
-     "name": "Coed Rec"
+     "slug": "coed-recreational-league",
+     "name": "Coed Recreational League"
     },
     {
-     "slug": "womens-premier",
-     "name": "Womens Premier"
+     "slug": "womens-super-league",
+     "name": "Women's Super League"
     },
     {
-     "slug": "womens-8v8-recreation",
-     "name": "Women's 8v8 Recreation"
+     "slug": "womens-championship",
+     "name": "Women's Championship"
     }
    ]
   }

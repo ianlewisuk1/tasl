@@ -24,4 +24,4 @@ Replacement site for the Triangle Adult Soccer League. Product requirements: `RE
 ## UI rules
 - Mimic premierleague.com tables; rounds are "Gameweek N" (Mon–Sun week with scheduled games), never dates.
 - Zones: champion = 1st (gold), relegation = bottom 2 (red).
-- Men's and co-ed league divisions use English pyramid names with parity: Men's Premier League … Men's League Two, Coed Premier League … Coed National League North. These 10 lead the dropdown, then other men's, other co-ed, women's. Mapping and order: `DISPLAY_NAMES` / `division_order` in `scraper/tasl_scraper/cli.py`. Old addresses redirect via `web/next.config.ts`.
+- Every division uses English pyramid style names (Men's Premier League … Coed National League North lead the dropdown; then Men's Over 30 Premier League …, Coed Recreational League, Women's Super League, Women's Championship). Names and order: `DISPLAY_NAMES` / `DIVISION_ORDER` in `scraper/tasl_scraper/cli.py`. Old addresses redirect via `web/next.config.ts`.

@@ -99,17 +99,37 @@ def verify(args) -> int:
 
 NOT_DIVISIONS = {"Guest Players", "More Teams!"}
 
-# Men's and co-ed league divisions are shown with English football pyramid names. TeamPass renamed some
-# divisions over the years (Mens 1 -> Triangle Men's Premier League, Coed Championship -> Coed Select);
-# old and new names map to the same division so a team's history lines up across seasons.
-MENS_PYRAMID = [
+# Divisions are shown with English football pyramid names. TeamPass renamed some divisions over the years
+# (Mens 1 -> Triangle Men's Premier League, Coed Championship -> Coed Select); old and new names map to the
+# same division so a team's history lines up across seasons. Divisions that were split into parallel groups
+# (Coed Over 30 - 3 and 3B) map to one division and show as separate tables.
+DIVISION_ORDER = [
+    # The two main pyramids lead the dropdown.
     "Men's Premier League", "Men's Championship", "Men's League One", "Men's League Two", "Men's National League",
-]
-COED_PYRAMID = [
     "Coed Premier League", "Coed Championship", "Coed League One", "Coed League Two",
     "Coed National League", "Coed National League North",
+    # Then age groups, recreational and women's divisions.
+    "Men's Over 30 Premier League", "Men's Over 30 Championship", "Men's Over 30 League One",
+    "Men's Over 40 Premier League", "Men's Over 50 Premier League", "Men's Over 56 Premier League",
+    "Men's Over 60 Premier League", "Men's Over 60 Pickup",
+    "Coed Over 30 Premier League", "Coed Over 30 Championship", "Coed Recreational League",
+    "Women's Super League", "Women's Championship",
 ]
 DISPLAY_NAMES = {
+    "Men Over 30 - 1": "Men's Over 30 Premier League",
+    "Men Over 30 - 2": "Men's Over 30 Championship",
+    "Men Over 30 - 3": "Men's Over 30 League One",
+    "Men Over 40": "Men's Over 40 Premier League",
+    "Men Over 50": "Men's Over 50 Premier League",
+    "Men Over 56": "Men's Over 56 Premier League",
+    "Men Over 60": "Men's Over 60 Premier League",
+    "Men Over 60 Pickup": "Men's Over 60 Pickup",
+    "Coed Over 30 - 1/2": "Coed Over 30 Premier League",
+    "Coed Over 30 - 3": "Coed Over 30 Championship",
+    "Coed Over 30 - 3B": "Coed Over 30 Championship",
+    "Coed Rec": "Coed Recreational League",
+    "Womens Premier": "Women's Super League",
+    "Women's 8v8 Recreation": "Women's Championship",
     "Triangle Men's Premier League": "Men's Premier League",
     "Mens 1": "Men's Premier League",
     "Mens 2": "Men's Championship",
@@ -127,16 +147,10 @@ DISPLAY_NAMES = {
 
 
 def division_order(name: str, teampass_sort: int) -> tuple:
-    """Dropdown order: men's pyramid, co-ed pyramid, then other men's, other co-ed, everything else."""
-    if name in MENS_PYRAMID:
-        return (0, MENS_PYRAMID.index(name))
-    if name in COED_PYRAMID:
-        return (1, COED_PYRAMID.index(name))
-    if name.startswith("Men"):
-        return (2, 0, teampass_sort)
-    if name.startswith("Coed"):
-        return (3, 0, teampass_sort)
-    return (4, 0 if "Premier" in name else 1, teampass_sort)
+    """Dropdown order from DIVISION_ORDER; divisions not listed there go last, in TeamPass order."""
+    if name in DIVISION_ORDER:
+        return (0, DIVISION_ORDER.index(name))
+    return (1, teampass_sort)
 
 
 def slugify(s: str) -> str:
@@ -172,7 +186,8 @@ def export(args) -> int:
             name = DISPLAY_NAMES.get(p["division"], p["division"])
             d = divisions.setdefault(name, {"slug": slugify(name), "name": name, "teampassName": p["division"], "pools": [],
                                             "_order": division_order(name, p["sort"])})
-            d["pools"].append({"name": p["name"], "teamIds": ids})
+            # Pools are titled only when a division has several; merged divisions fall back to the TeamPass name.
+            d["pools"].append({"name": p["name"] or p["division"], "teamIds": ids})
         ordered = sorted(divisions.values(), key=lambda d: d.pop("_order"))
         keep = {i for d in ordered for p in d["pools"] for i in p["teamIds"]}
         data = {
